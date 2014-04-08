@@ -316,7 +316,7 @@ service = service_CHANGE_ME_SERVICE_ID --
 ngx.var.secret_token = service.secret_token
 
 -- Get access token from response
-params.access_token = CHANGE_ME_ACCESS_TOKEN_FROM_RESPONSE
+  params.access_token = parameters["access_token"]
 
 get_credentials_access_token(params, service_CHANGE_ME_SERVICE_ID)
 auth_strat = "oauth"

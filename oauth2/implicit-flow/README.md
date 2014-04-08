@@ -2,7 +2,24 @@
 
 ##Requirements
 
-You will need to install Redis on your Nginx server in order for this to work. You can find instructions on how to do this here:
+You will need to install Redis on your Nginx server in order for this to work:
+
+### Redis
+
+Download and install redis on Nginx server (we use version 2.6.16 which is the currently stable version at the time of writing this)
+
+```
+tar zxvf  redis-VERSION.tar.gz  
+cd redis-VERSION
+make
+sudo make install
+```
+
+In order to to install and run redis server you will need to run the following, accepting all the default values:
+
+```
+sudo ./utils/install_server.sh
+```
 
 ## Token Generation
 
@@ -19,7 +36,5 @@ Nginx acts as the OAuth provider.
 
 
 #### Notes 
-
-## No Token Generation
 
 

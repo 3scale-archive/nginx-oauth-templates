@@ -2,6 +2,11 @@
 
 ##Requirements
 
+You will need to:
+
+* Find all instances of CHANGE_ME in the config files and replace them with the correct values for your API
+* Place threescale_utils.lua in /opt/openresty/lualib/threescale_utils.lua
+
 You will need to install Redis on your Nginx server in order for this to work:
 
 ### Redis

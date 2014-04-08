@@ -21,6 +21,6 @@ This will return an access token in the following form:
 {"access_token": "ACCESS_TOKEN", "token_type": "bearer"}
 ```
 
-You can then call your API using the access_token instead
+You can then call your API using the access_token instead of the client_id/client_secret
 
 `curl -v -X GET "http://localhost/API_ENDPOINT?access_token=ACCESS_TOKEN"`

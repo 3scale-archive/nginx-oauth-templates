@@ -5,8 +5,8 @@ Nginx Sample Configs for OAuth Flows
 
 The repository is organized as follows:
 
-- OAuth1 will contain folders with sample Nginx config files for OAuth v1 Flows
-- OAuth2 contains folders sample Nginx config files for OAuth v2 Flows
+- oauth1 will contain folders with sample Nginx config files for OAuth v1 Flows
+- oauth2 contains folders sample Nginx config files for OAuth v2 Flows
 
 
 Inside each of the different OAuth flow folders there will be 1 or more folders:

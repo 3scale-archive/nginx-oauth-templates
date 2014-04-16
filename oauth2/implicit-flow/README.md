@@ -30,6 +30,13 @@ sudo ./utils/install_server.sh
 
 Nginx acts as the OAuth provider. 
 
+### Files
+
+- `authorize.lua` - This file contains the logic for authorizing the client and redirecting the end user to the oAuth login page as well as checking that the return url matches the one specified by the API buyer. It gets executed when the /authorize endpoint is hit.
+- `authorized_callback.lua` - This file contains the logic for generating the access_token and redirecting back to the application’s redirect url with the access_token. As an API provider, you will need to call this endpoint once your user successfully logs in and authorizes the API buyer’s requested access. This file gets executed when the /callback endpoint is called by your application.
+- `nginx.conf` - This is a typical Nginx config file. Feel free to edit it or to copy paste it to your existing .conf if you are already running Nginx.
+- `nginx.lua` - This file contains the logic that you defined on the web interface to track usage for various metrics and methods as well as checking for authorization to access the various endpoints.
+
 ### Usage
 
 1. Client calls /authorize endpoint to redirect user to login page:

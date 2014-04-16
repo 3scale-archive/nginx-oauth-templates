@@ -9,16 +9,22 @@ You will need to:
 * Find all instances of CHANGE_ME in the config files and replace them with the correct values for your API
 * Place threescale_utils.lua in /opt/openresty/lualib/threescale_utils.lua
 
+## Files
+
+- `get_token.lua` - This file contains the logic to return the access token for the client identified by a client_id. It gets executed when the /oauth/token endpoint is called.
+- `nginx.conf` - This is a typical Nginx config file. Feel free to edit it or to copy paste it to your existing .conf if you are already running Nginx.
+- `nginx.lua` - This file contains the logic that you defined on the web interface to track usage for various metrics and methods as well as checking for authorization to access the various endpoints.
+
 ## Usage
 
-1. Authorize:
+- Authorize:
 
-`curl -X GET "http://localhost/oauth/token?client_id=CLIENT_ID&client_secret=CLIENT_SECRET&grant_type=password&username=USERNAME&password=PASSWORD"`
+`curl -X GET "https://localhost/oauth/token?client_id=CLIENT_ID&client_secret=CLIENT_SECRET&grant_type=password&username=USERNAME&password=PASSWORD"`
 
 Returns Access Token from API Auth Server.
 
-2. You can then call API using the access_token:
+- You can then call API using the access_token:
 
-`curl -v -X GET "http://localhost/API_ENDPOINT?access_token=ACCESS_TOKEN"`
+`curl -v -X GET "https://localhost/API_ENDPOINT?access_token=ACCESS_TOKEN"`
 
 ### Notes 

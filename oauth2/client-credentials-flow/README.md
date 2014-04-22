@@ -1,5 +1,7 @@
 # Client Credentials Flow
 
+The calls for requesting an access token are the same regardless of which server generates and manages the access token (Nginx or an additional Authorization Server.) 
+
 ## Requirements
 
 You will need to:

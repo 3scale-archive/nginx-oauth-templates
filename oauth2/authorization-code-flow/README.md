@@ -14,7 +14,8 @@ You will need to:
 
 Download and install redis on Nginx server (we use version 2.6.16 which is the currently stable version at the time of writing this)
 
-```tar zxvf  redis-VERSION.tar.gz  
+```
+tar zxvf  redis-VERSION.tar.gz  
 cd redis-VERSION
 make
 sudo make install

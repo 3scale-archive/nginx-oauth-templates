@@ -13,8 +13,8 @@ Params:
 - provider_key
 - app_id
 - token
-- ttl (optional) 
-If no ttl is set, it will be a non-expiring token, otherwise it gets automatically deleted once the time is up  
+- ttl (optional) -  
+ Seconds to expiry. If no ttl is set, it will be a non-expiring token, otherwise it gets automatically deleted once the time is up  
 
 ### To delete an access_token
 

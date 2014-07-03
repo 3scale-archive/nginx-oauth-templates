@@ -269,17 +269,7 @@ function oauth(params, service)
     ngx.var.usage = add_trans(ngx.var.usage)
   end
 
-  if res.status == 200 then
-    local res2 = ngx.location.capture("/_threescale/oauth_report?access_token="..
-      params.access_token, 
-      {method = ngx.HTTP_POST, share_all_vars = true})
-
-    if res2.status ~= 202 then
-      ngx.header.content_type = "application/json; charset=utf-8"
-      ngx.print('{"error": "not authenticated in 3scale end"}')
-      ngx.exit(ngx.HTTP_OK)
-    end
-  else
+  if res.status ~= 200   then
     ngx.print('{"error": "not authenticated in 3scale authorize returned'.. res.status .. ' "}')
     ngx.exit(ngx.HTTP_OK)
   end
@@ -329,7 +319,7 @@ if ngx.var.service_id == 'CHANGE_ME_SERVICE_ID' then
 
   -- Do this to remove token type, e.g Bearer from token
   params.access_token = string.split(parameters["authorization"], " ")[2]
-
+  ngx.var.access_token = params.access_token
   get_credentials_access_token(params, service_2555417696392)
   -- ngx.var.cached_key = "CHANGE_ME_SERVICE_ID" .. ":" .. params.access_token  -- no cache yet
   auth_strat = "oauth"

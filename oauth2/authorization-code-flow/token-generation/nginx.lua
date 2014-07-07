@@ -313,13 +313,12 @@ local host = ngx.req.get_headers()["Host"]
 local auth_strat = ""
 local service = {}
 if ngx.var.service_id == 'CHANGE_ME_SERVICE_ID' then
-  local parameters = get_auth_params("not_headers", string.split(ngx.var.request, " ")[1] )
+  local parameters = get_auth_params("CHANGE_ME_AUTH_PARAMS_LOCATION", string.split(ngx.var.request, " ")[1] )
   service = service_CHANGE_ME_SERVICE_ID --
   ngx.var.secret_token = service.secret_token
   ngx.var.access_token = parameters.access_token
   params.access_token = parameters.access_token
   get_credentials_access_token(params , service_CHANGE_ME_SERVICE_ID)
-  -- ngx.var.cached_key = "CHANGE_ME_SERVICE_ID" .. ":" .. params.access_token  -- no cache yet
   auth_strat = "oauth"
   ngx.var.service_id = "CHANGE_ME_SERVICE_ID"
   ngx.var.proxy_pass = "https://backend_CHANGE_ME_API_BACKEND"
@@ -338,7 +337,6 @@ if get_debug_value() then
   ngx.header["X-3scale-matched-rules"] = matched_rules2
   ngx.header["X-3scale-credentials"]   = ngx.var.credentials
   ngx.header["X-3scale-usage"]         = ngx.var.usage
-  ngx.header["X-3scale-hostname"]      = ngx.var.hostname
 end
 
 authorize(auth_strat, params, service)

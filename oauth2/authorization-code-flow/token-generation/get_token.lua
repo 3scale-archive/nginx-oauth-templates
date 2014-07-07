@@ -57,3 +57,5 @@ function get_token()
       ngx.exit(ngx.HTTP_FORBIDDEN)
    end
 end
+
+local s = get_token()

@@ -260,19 +260,30 @@ function authorize(auth_strat, params, service)
 end
 
 function oauth(params, service)
-  local res = ngx.location.capture("/_threescale/toauth_authorize?access_token="..
-    params.access_token ..
-    "&user_id="..
-    params.access_token,
-    { share_all_vars = true })
-  
   if ngx.var.usage ~= nil  then
     ngx.var.usage = add_trans(ngx.var.usage)
   end
 
-  if res.status ~= 200   then
-    ngx.print('{"error": "not authenticated in 3scale authorize returned'.. res.status .. ' "}')
-    ngx.exit(ngx.HTTP_OK)
+  ngx.var.cached_key = ngx.var.cached_key .. ":" .. ngx.var.usage
+  local access_tokens = ngx.shared.api_keys
+  local is_known = access_tokens:get(ngx.var.cached_key)
+
+  if is_known ~= 200 then
+    local res = ngx.location.capture("/_threescale/toauth_authorize?access_token="..
+      params.access_token ..
+      "&user_id="..
+      params.access_token,
+      { share_all_vars = true })
+
+    if res.status ~= 200   then
+      access_tokens:delete(ngx.var.cached_key)
+      ngx.status = res.status
+      ngx.header.content_type = "application/json"
+      error_authorization_failed(service)
+    else
+      access_tokens:set(ngx.var.cached_key,200)
+    end
+    ngx.var.cached_key = nil
   end
 end
 
@@ -319,6 +330,7 @@ if ngx.var.service_id == 'CHANGE_ME_SERVICE_ID' then
   ngx.var.access_token = parameters.access_token
   params.access_token = parameters.access_token
   get_credentials_access_token(params , service_CHANGE_ME_SERVICE_ID)
+  ngx.var.cached_key = "CHANGE_ME_SERVICE_ID" .. ":" .. params.access_token
   auth_strat = "oauth"
   ngx.var.service_id = "CHANGE_ME_SERVICE_ID"
   ngx.var.proxy_pass = "https://backend_CHANGE_ME_API_BACKEND"

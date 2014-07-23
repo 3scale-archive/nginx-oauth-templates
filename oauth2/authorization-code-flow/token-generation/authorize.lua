@@ -3,6 +3,7 @@ local ts = require 'threescale_utils'
 local redis = require 'resty.redis'
 local red = redis:new()
 
+-- Checks that the return url matches the one specified by the client identified by client_id
 function check_return_url(client_id, return_url)
   local res = ngx.location.capture("/_threescale/redirect_uri_matches",
 				  { vars = { red_url = return_url ,
@@ -10,6 +11,7 @@ function check_return_url(client_id, return_url)
   return (res.status == 200)
 end
 
+-- Authorizes the client
 -- returns 2 values: ok, err
 -- if ok == true, err is undefined
 -- if ok == false, err contains the errors

@@ -20,11 +20,9 @@ function show_table(a)
   for k,v in pairs(a) do
     local msg = ""
     msg = msg.. k
-    
     if type(v) == "string" then
       msg = msg.. " => " .. v
     end
-    
     ngx.log(0,msg)
   end
 end
@@ -78,21 +76,17 @@ function string:split(delimiter)
   local result = { }
   local from = 1
   local delim_from, delim_to = string.find( self, delimiter, from )
-  
   while delim_from do
     table.insert( result, string.sub( self, from , delim_from-1 ) )
     from = delim_to + 1
     delim_from, delim_to = string.find( self, delimiter, from )
   end
-  
   table.insert( result, string.sub( self, from ) )
-  
   return result
 end
 
 function first_values(a)
   r = {}
-  
   for k,v in pairs(a) do
     if type(v) == "table" then
       r[k] = v[1]
@@ -100,7 +94,6 @@ function first_values(a)
       r[k] = v
     end
   end
-
   return r
 end
 
@@ -114,7 +107,6 @@ function build_querystring(query)
   for i,v in pairs(query) do
     qstr = qstr .. 'usage[' .. i .. ']' .. '=' .. v .. '&'
   end
-
   return string.sub(qstr, 0, #qstr-1)
 end
 
@@ -132,7 +124,6 @@ function build_query(query)
   for i,v in pairs(query) do
     qstr = qstr .. i .. '=' .. v .. '&'
   end
-  
   return string.sub(qstr, 0, #qstr-1)
 end
 
@@ -184,7 +175,6 @@ function extract_usage_CHANGE_ME_SERVICE_ID(request)
 
   -- mapping rules go here, e.g
   local m =  ngx.re.match(path,[=[^/]=])
-  
   if (m and method == "GET") then
      -- rule: / --
      table.insert(matched_rules, "/")
@@ -196,12 +186,10 @@ function extract_usage_CHANGE_ME_SERVICE_ID(request)
   -- if there was no match, usage is set to nil and it will respond a 404, this behavior can be changed
   if found then
     matched_rules2 = table.concat(matched_rules, ", ")
-    
     return build_querystring(usage_t)
   else
     return nil
   end
-
 end
 
 --[[
@@ -210,7 +198,6 @@ end
 
 function get_auth_params(where, method)
   local params = {}
-  
   if where == "headers" then
     params = ngx.req.get_headers()
   elseif method == "GET" then
@@ -243,7 +230,6 @@ end
 
 function get_debug_value()
   local h = ngx.req.get_headers()
-  
   if h["X-3scale-debug"] == 'CHANGE_ME_PROVIDER_KEY' then
     return true
   else

@@ -30,7 +30,6 @@ function authorize(params)
     ngx.log(0, ts.dump(params))
     return false, 'invalid_request'
   end
-  
   ts.error("we should never be here")
 end
 
@@ -71,7 +70,6 @@ function redirect_to_login(params)
 end
 
 local params = ngx.req.get_uri_args()
-
 local _ok, a_err = authorize(params)
 
 if not a_ok then

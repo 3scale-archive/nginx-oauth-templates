@@ -259,20 +259,31 @@ function authorize(auth_strat, params, service)
 end
 
 function oauth(params, service)
+  if ngx.var.usage ~= nil  then
+    ngx.var.usage = add_trans(ngx.var.usage)
+  end
+
+  ngx.var.cached_key = ngx.var.cached_key .. ":" .. ngx.var.usage
+  local access_tokens = ngx.shared.api_keys
+  local is_known = access_tokens:get(ngx.var.cached_key)
+
+  if is_known ~= 200 then
   local res = ngx.location.capture("/_threescale/toauth_authorize?access_token="..
     params.access_token ..
     "&user_id="..
     params.access_token,
     { share_all_vars = true })
   
-  if ngx.var.usage ~= nil  then
-    ngx.var.usage = add_trans(ngx.var.usage)
-  end
-
   if res.status ~= 200   then
-    ngx.print('{"error": "not authenticated in 3scale authorize returned'.. res.status .. ' "}')
-    ngx.exit(ngx.HTTP_OK)
+      access_tokens:delete(ngx.var.cached_key)
+      ngx.status = res.status
+      ngx.header.content_type = "application/json"
+      error_authorization_failed(service)
+    else
+      access_tokens:set(ngx.var.cached_key,200)
   end
+    ngx.var.cached_key = nil
+end
 end
 
 function authrep(params, service)
@@ -313,7 +324,7 @@ local auth_strat = ""
 local service = {}
 
 if ngx.var.service_id == 'CHANGE_ME_SERVICE_ID' then
-  local parameters = get_auth_params("headers", string.split(ngx.var.request, " ")[1] )
+  local parameters = get_auth_params("CHANGE_ME_AUTH_PARAMS_LOCATION", string.split(ngx.var.request, " ")[1] )
   service = service_CHANGE_ME_SERVICE_ID --
   ngx.var.secret_token = service.secret_token
 
@@ -341,7 +352,6 @@ if get_debug_value() then
   ngx.header["X-3scale-matched-rules"] = matched_rules2
   ngx.header["X-3scale-credentials"]   = ngx.var.credentials
   ngx.header["X-3scale-usage"]         = ngx.var.usage
-  ngx.header["X-3scale-hostname"]      = ngx.var.hostname
 end
 
 authorize(auth_strat, params, service)

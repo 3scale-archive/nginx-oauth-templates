@@ -1,8 +1,6 @@
 -- -*- mode: lua; -*-
 -- Version:
 -- Error Messages per service
-local ts = require 'threescale_utils'
-
 service_CHANGE_ME_SERVICE_ID = {
   error_auth_failed = 'Authentication failed',
   error_auth_missing = 'Authentication parameters missing',
@@ -13,9 +11,8 @@ service_CHANGE_ME_SERVICE_ID = {
   no_match_status = 404,
   auth_failed_status = 403,
   auth_missing_status = 403,
-  secret_token = 'CHANGE_ME_SECRET_TOKEN'
+secret_token = 'Shared_secret_sent_from_proxy_to_API_backend'
 }
-
 
 -- Logging Helpers
 function show_table(a)
@@ -179,7 +176,6 @@ function extract_usage_CHANGE_ME_SERVICE_ID(request)
   local m =  ngx.re.match(path,[=[^/]=])
   if (m and method == "GET") then
      -- rule: / --
-
      table.insert(matched_rules, "/")
 
      usage_t["hits"] = set_or_inc(usage_t, "hits", 1)
@@ -249,19 +245,31 @@ function authorize(auth_strat, params, service)
 end
 
 function oauth(params, service)
+  if ngx.var.usage ~= nil  then
+    ngx.var.usage = add_trans(ngx.var.usage)
+  end
+
+  ngx.var.cached_key = ngx.var.cached_key .. ":" .. ngx.var.usage
+  local access_tokens = ngx.shared.api_keys
+  local is_known = access_tokens:get(ngx.var.cached_key)
+
+  if is_known ~= 200 then
   local res = ngx.location.capture("/_threescale/toauth_authorize?access_token="..
     params.access_token ..
     "&user_id="..
     params.access_token,
     { share_all_vars = true })
-  if ngx.var.usage ~= nil  then
-    ngx.var.usage = add_trans(ngx.var.usage)
-  end
 
   if res.status ~= 200   then
-    ngx.print('{"error": "not authenticated in 3scale authorize returned'.. res.status .. ' "}')
-    ngx.exit(ngx.HTTP_OK)
+      access_tokens:delete(ngx.var.cached_key)
+      ngx.status = res.status
+      ngx.header.content_type = "application/json"
+      error_authorization_failed(service)
+    else
+      access_tokens:set(ngx.var.cached_key,200)
   end
+    ngx.var.cached_key = nil
+end
 end
 
 function authrep(params, service)
@@ -296,7 +304,6 @@ function add_trans(usage)
   return string.sub(ret, 1, -2)
 end
 
-
 local params = {}
 local host = ngx.req.get_headers()["Host"]
 local auth_strat = ""
@@ -310,6 +317,7 @@ if ngx.var.service_id == 'CHANGE_ME_SERVICE_ID' then
   params.access_token = CHANGE_ME_ACCESS_TOKEN_FROM_RESPONSE
   ngx.var.access_token = params.access_token
   get_credentials_access_token(params, service_CHANGE_ME_SERVICE_ID)
+  ngx.var.cached_key = "CHANGE_ME_SERVICE_ID" .. ":" .. params.access_token
   auth_strat = "oauth"
   ngx.var.service_id = "CHANGE_ME_SERVICE_ID"
   ngx.var.proxy_pass = "https://backend_CHANGE_ME_API_BACKEND"

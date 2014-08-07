@@ -331,8 +331,8 @@ if ngx.var.service_id == 'CHANGE_ME_SERVICE_ID' then
   -- Do this to remove token type, e.g Bearer from token
   params.access_token = string.split(parameters["authorization"], " ")[2]
   ngx.var.access_token = params.access_token
-  get_credentials_access_token(params, service_2555417696392)
-  -- ngx.var.cached_key = "CHANGE_ME_SERVICE_ID" .. ":" .. params.access_token  -- no cache yet
+  get_credentials_access_token(params, service_CHANGE_ME_SERVICE_ID)
+  ngx.var.cached_key = "CHANGE_ME_SERVICE_ID" .. ":" .. params.access_token
   auth_strat = "oauth"
         
   ngx.var.service_id = "CHANGE_ME_SERVICE_ID"

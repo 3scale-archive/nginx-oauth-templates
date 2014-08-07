@@ -310,18 +310,18 @@ local auth_strat = ""
 local service = {}
 if ngx.var.service_id == 'CHANGE_ME_SERVICE_ID' then
   local parameters = get_auth_params("CHANGE_ME_AUTH_PARAMS_LOCATION", string.split(ngx.var.request, " ")[1] )
-service = service_CHANGE_ME_SERVICE_ID --
-ngx.var.secret_token = service.secret_token
+  service = service_CHANGE_ME_SERVICE_ID --
+  ngx.var.secret_token = service.secret_token
 
 -- Get access token from response
   params.access_token = parameters["access_token"]
   ngx.var.access_token = params.access_token
-get_credentials_access_token(params, service_CHANGE_ME_SERVICE_ID)
+  get_credentials_access_token(params, service_CHANGE_ME_SERVICE_ID)
   ngx.var.cached_key = "CHANGE_ME_SERVICE_ID" .. ":" .. params.access_token
-auth_strat = "oauth"
-ngx.var.service_id = "CHANGE_ME_SERVICE_ID"
-ngx.var.proxy_pass = "https://backend_CHANGE_ME_API_BACKEND"
-ngx.var.usage = extract_usage_CHANGE_ME_SERVICE_ID(ngx.var.request)
+  auth_strat = "oauth"
+  ngx.var.service_id = "CHANGE_ME_SERVICE_ID"
+  ngx.var.proxy_pass = "https://backend_CHANGE_ME_API_BACKEND"
+  ngx.var.usage = extract_usage_CHANGE_ME_SERVICE_ID(ngx.var.request)
 end
 
 ngx.var.credentials = build_query(params)

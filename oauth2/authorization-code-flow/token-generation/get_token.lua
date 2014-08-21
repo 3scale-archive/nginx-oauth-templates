@@ -9,9 +9,9 @@ end
 
 -- Returns the access token (stored in redis) for the client identified by the id
 -- This needs to be called within a minute of it being stored, as it expires and is deleted
-function generate_access_token_for(client_id)
+function generate_access_token_for(params)
   local ok, err = red:connect("127.0.0.1", 6379)
-  ok, err =  red:hgetall("c:".. client_id) -- code?
+  ok, err =  red:hgetall("c:".. params.client_id)
   
   if ok[1] == nil then
     ngx.say("expired_code")
@@ -45,23 +45,23 @@ local function store_token(client_id, token)
 end
 
 function get_token()
-   if "GET" == ngx.req.get_method() then
-      params = ngx.req.get_uri_args()
-   else
-      ngx.req.read_body()
-      params = ngx.req.get_post_args()
-   end
+  local params = {}
+  if "GET" == ngx.req.get_method() then
+    params = ngx.req.get_uri_args()
+  else
+    ngx.req.read_body()
+    params = ngx.req.get_post_args()
+  end
 
-   local required_params = {'client_id', 'redirect_uri', 'client_secret', 'code', 'grant_type'}
+  local required_params = {'client_id', 'redirect_uri', 'client_secret', 'code', 'grant_type'}
 
-   if ts.required_params_present(required_params, params) and params['grant_type'] == 'authorization_code'  then
-      local token = generate_access_token_for(params.client_id)
-      store_token(params.client_id, token)
-   else
-      ngx.log(0, "NOPE")
-      ngx.exit(ngx.HTTP_FORBIDDEN)
-   end
+  if ts.required_params_present(required_params, params) and params['grant_type'] == 'authorization_code'  then
+    local token = generate_access_token_for(params)
+    store_token(params.client_id, token)
+  else
+    ngx.log(0, "NOPE")
+    ngx.exit(ngx.HTTP_FORBIDDEN)
+  end
 end
 
-local params = {}
 local s = get_token()

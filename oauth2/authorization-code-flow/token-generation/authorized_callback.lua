@@ -46,7 +46,7 @@ if ts.required_params_present({'state'}, params) then
    end
 
    ngx.req.set_header("Content-Type", "application/x-www-form-urlencoded")
-   return ngx.redirect(client_data.redirect_uri .. "?code="..code .. "&state=" .. (client_data.state or ""))
+   return ngx.redirect(client_data.redirect_uri .. "?code="..code .. "&state=" .. (params.state or ""))
 else
    ts.missing_args("{ 'error': '".. "invalid_client_data from login form" .. "'}")
 end

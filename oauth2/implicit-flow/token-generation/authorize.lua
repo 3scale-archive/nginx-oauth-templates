@@ -65,7 +65,7 @@ function redirect_to_login(params)
 
    -- TODO: If the login_url has already the parameter state bad
    -- things are to happen
-   ngx.redirect(ngx.var.login_url .. "?&scope=".. params.scope .. "&state=" .. n)
+   ngx.redirect(ngx.var.login_url .. "?scope=".. params.scope .. "&state=" .. n)
    ngx.exit(ngx.HTTP_OK)
 end
 
@@ -73,5 +73,5 @@ local params = ngx.req.get_uri_args()
 local _ok, a_err = authorize(params)
 
 if not a_ok then
-  ngx.redirect(ngx.var.login_url .. "?&scope=" .. params.scope .. "&state=" .. (params.state or '') .. "&error=" .. a_err)
+  ngx.redirect(ngx.var.login_url .. "?scope=" .. params.scope .. "&state=" .. (params.state or '') .. "&error=" .. a_err)
 end

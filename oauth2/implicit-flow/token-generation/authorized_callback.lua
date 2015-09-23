@@ -40,7 +40,7 @@ end
 local params = ngx.req.get_uri_args()
 
 if ts.required_params_present({'state', 'secret_token'}, params) then
-  if params.secret_token ~= service.secret_token then
+  if params.secret_token ~= service_CHANGE_ME_SERVICE_ID.secret_token then
     ts.error("Secret Token does not match")
   end
 

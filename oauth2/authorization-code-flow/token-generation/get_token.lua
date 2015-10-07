@@ -3,6 +3,14 @@ local redis = require 'resty.redis'
 local ts = require 'threescale_utils'
 local red = redis:new()
 
+
+function check_client_secret(client_id, secret)
+  local res = ngx.location.capture("/_threescale/client_secret_matches",
+				  { vars = { client_id = client_id }})
+  local real_secret = res.body:match("<key>([^<]+)</key>")
+  return (secret == real_secret)
+end
+
 function generate_token(client_id)
    return ts.sha1_digest(ngx.time() .. client_id)
 end
@@ -18,7 +26,7 @@ function generate_access_token_for(params)
     return ngx.exit(ngx.HTTP_OK)
   else
     local client_data = red:array_to_hash(ok)
-    if params.code == client_data.code then
+    if params.code == client_data.code and check_client_secret(params.client_id, params.client_secret) then
       return client_data.pre_access_token
     else
       ngx.header.content_type = "application/json; charset=utf-8"

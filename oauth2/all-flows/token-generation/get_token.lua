@@ -36,13 +36,13 @@ function generate_access_token_for(params)
   end
 end
 
-local function store_token(client_id, access_token, expires_in)
+local function store_token(params)
   local stored = ngx.location.capture("/_threescale/oauth_store_token",
     {method = ngx.HTTP_POST,
     body = "provider_key=" ..ngx.var.provider_key ..
-    "&app_id=".. client_id ..
-    "&token=".. access_token..
-    "&ttl="..expires_in})
+    "&app_id=".. params.client_id ..
+    "&token=".. params.token..
+    "&ttl=".. (params.ttl or "-1")})
   if stored.status ~= 200 then
     ngx.say("eeeerror")
     ngx.exit(ngx.HTTP_OK)
@@ -73,4 +73,11 @@ function get_token()
   end
 end
 
-local s = get_token()
+local params = ngx.req.get_uri_args()
+
+if params.token then
+  local s = store_token(params)
+else
+  local s = get_token()
+end
+

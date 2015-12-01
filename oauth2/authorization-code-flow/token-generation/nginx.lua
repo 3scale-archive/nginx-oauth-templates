@@ -2,18 +2,25 @@
 -- Version:
 -- Error Messages per service
 
+if ngx.status == 403  then
+  ngx.say("Throttling due to too many requests")
+  ngx.exit(403)
+end
+
+
 service_CHANGE_ME_SERVICE_ID = {
-error_auth_failed = 'Authentication failed',
-error_auth_missing = 'Authentication parameters missing',
-auth_failed_headers = 'text/plain; charset=us-ascii',
-auth_missing_headers = 'text/plain; charset=us-ascii',
-error_no_match = 'No rule matched',
-no_match_headers = 'text/plain; charset=us-ascii',
-no_match_status = 404,
-auth_failed_status = 403,
-auth_missing_status = 403,
-secret_token = 'Shared_secret_sent_from_proxy_to_API_backend'
+  error_auth_failed = 'Authentication failed',
+  error_auth_missing = 'Authentication parameters missing',
+  auth_failed_headers = 'text/plain; charset=us-ascii',
+  auth_missing_headers = 'text/plain; charset=us-ascii',
+  error_no_match = 'No Mapping Rule matched',
+  no_match_headers = 'text/plain; charset=us-ascii',
+  no_match_status = 404,
+  auth_failed_status = 403,
+  auth_missing_status = 403,
+  secret_token = 'Shared_secret_sent_from_proxy_to_API_backend_CHANGE_ME'
 }
+
 
 -- Logging Helpers
 function show_table(a)
@@ -76,6 +83,7 @@ function string:split(delimiter)
   local result = { }
   local from = 1
   local delim_from, delim_to = string.find( self, delimiter, from )
+  if delim_from == nil then return {self} end
   while delim_from do
     table.insert( result, string.sub( self, from , delim_from-1 ) )
     from = delim_to + 1
@@ -109,6 +117,7 @@ function build_querystring(query)
   end
   return string.sub(qstr, 0, #qstr-1)
 end
+
 
 ---
 -- Builds a query string from a table.
@@ -160,11 +169,11 @@ end
 
 matched_rules2 = ""
 
-function extract_usage_CHANGE_ME_SERVICE_ID(request)
-
+  function extract_usage_CHANGE_ME_SERVICE_ID(request)
   local t = string.split(request," ")
   local method = t[1]
-  local path = t[2]
+  local q = string.split(t[2], "?")
+  local path = q[1]
   local found = false
   local usage_t =  {}
   local m = ""
@@ -172,21 +181,20 @@ function extract_usage_CHANGE_ME_SERVICE_ID(request)
   local params = {}
 
   local args = get_auth_params(nil, method)
-
-  -- mapping rules go here, e.g
-  local m =  ngx.re.match(path,[=[^/]=])
+    local m =  ngx.re.match(path,[=[^/]=])
   if (m and method == "GET") then
-     -- rule: / --
-     table.insert(matched_rules, "/")
+  -- rule: / --
+          
+      table.insert(matched_rules, "/")
 
-     usage_t["hits"] = set_or_inc(usage_t, "hits", 1)
-     found = true
-  end
-  
+      usage_t["hits"] = set_or_inc(usage_t, "hits", 1)
+      found = true
+      end
+
   -- if there was no match, usage is set to nil and it will respond a 404, this behavior can be changed
   if found then
-    matched_rules2 = table.concat(matched_rules, ", ")
-    return build_querystring(usage_t)
+   matched_rules2 = table.concat(matched_rules, ", ")
+   return build_querystring(usage_t)
   else
     return nil
   end
@@ -206,7 +214,6 @@ function get_auth_params(where, method)
     ngx.req.read_body()
     params = ngx.req.get_post_args()
   end
-  
   return first_values(params)
 end
 
@@ -261,13 +268,13 @@ function oauth(params, service)
       params.access_token,
       { share_all_vars = true })
 
-    if res.status ~= 200   then
+    if res.status == 200   then
+      access_tokens:set(ngx.var.cached_key,200)
+    else
       access_tokens:delete(ngx.var.cached_key)
       ngx.status = res.status
       ngx.header.content_type = "application/json"
       error_authorization_failed(service)
-    else
-      access_tokens:set(ngx.var.cached_key,200)
     end
     ngx.var.cached_key = nil
   end
@@ -287,12 +294,13 @@ function authrep(params, service)
       api_keys:delete(ngx.var.cached_key)
       ngx.status = res.status
       ngx.header.content_type = "application/json"
+            ngx.var.cached_key = nil
       error_authorization_failed(service)
     else
-      api_keys:set(ngx.var.cached_key,200)
+            api_keys:set(ngx.var.cached_key,200)
     end
 
-    ngx.var.cached_key = nil
+        ngx.var.cached_key = nil
   end
 end
 
@@ -302,8 +310,9 @@ function add_trans(usage)
   for i,v in ipairs(us) do
     ret =  ret .. "transactions[0][usage]" .. string.sub(v, 6) .. "&"
   end
-    return string.sub(ret, 1, -2)
+  return string.sub(ret, 1, -2)
 end
+
 
 local params = {}
 local host = ngx.req.get_headers()["Host"]
@@ -313,6 +322,11 @@ if ngx.var.service_id == 'CHANGE_ME_SERVICE_ID' then
   local parameters = get_auth_params("CHANGE_ME_AUTH_PARAMS_LOCATION", string.split(ngx.var.request, " ")[1] )
   service = service_CHANGE_ME_SERVICE_ID --
   ngx.var.secret_token = service.secret_token
+
+  -- Do this to remove token type, e.g Bearer from token
+  -- params.access_token = string.split(parameters["authorization"], " ")[2]
+  -- ngx.var.access_token = params.access_token
+
   ngx.var.access_token = parameters.access_token
   params.access_token = parameters.access_token
   get_credentials_access_token(params , service_CHANGE_ME_SERVICE_ID)
@@ -325,6 +339,12 @@ end
 
 ngx.var.credentials = build_query(params)
 
+-- if true then
+--   log(ngx.var.app_id)
+--   log(ngx.var.app_key)
+--   log(ngx.var.usage)
+-- end
+
 -- WHAT TO DO IF NO USAGE CAN BE DERIVED FROM THE REQUEST.
 if ngx.var.usage == nil then
   ngx.header["X-3scale-matched-rules"] = ''
@@ -335,6 +355,7 @@ if get_debug_value() then
   ngx.header["X-3scale-matched-rules"] = matched_rules2
   ngx.header["X-3scale-credentials"]   = ngx.var.credentials
   ngx.header["X-3scale-usage"]         = ngx.var.usage
+  ngx.header["X-3scale-hostname"]      = ngx.var.hostname
 end
 
 authorize(auth_strat, params, service)

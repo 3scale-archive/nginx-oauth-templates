@@ -27,7 +27,7 @@ function generate_access_token_for(params)
   else
     local client_data = red:array_to_hash(ok)
     if params.code == client_data.code and check_client_secret(params.client_id, params.client_secret) then
-      return client_data.pre_access_token
+      return client_data.pre_access_token..":"..client_data.user_id
     else
       ngx.header.content_type = "application/json; charset=utf-8"
       ngx.say({'{"error": "invalid authorization code"}'})
@@ -36,20 +36,22 @@ function generate_access_token_for(params)
   end
 end
 
-local function store_token(client_id, access_token, expires_in)
+local function store_token(params)
   local stored = ngx.location.capture("/_threescale/oauth_store_token",
     {method = ngx.HTTP_POST,
     body = "provider_key=" ..ngx.var.provider_key ..
-    "&app_id=".. client_id ..
-    "&token=".. access_token..
-    "&ttl="..expires_in})
+    "&app_id=".. params.client_id ..
+    "&token=".. params.token..":"..params.username
+    "&ttl=".. (params.ttl or "-1")})
   if stored.status ~= 200 then
     ngx.say("eeeerror")
     ngx.exit(ngx.HTTP_OK)
   end
 
+ access_token = token:split(":")[1]
+
   ngx.header.content_type = "application/json; charset=utf-8"
-  ngx.say({'{"access_token": "'.. token .. '", "token_type": "bearer"}'})
+  ngx.say({'{"access_token": "'.. access_token .. '", "token_type": "bearer"}'})
   ngx.exit(ngx.HTTP_OK)
 end
 
@@ -73,4 +75,11 @@ function get_token()
   end
 end
 
-local s = get_token()
+local params = ngx.req.get_uri_args()
+
+if params.token then
+  local s = store_token(params)
+else
+  local s = get_token()
+end
+

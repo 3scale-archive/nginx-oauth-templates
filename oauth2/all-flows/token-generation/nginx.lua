@@ -8,7 +8,7 @@ if ngx.status == 403  then
 end
 
 
-service_CHANGE_ME_SERVICE_ID = {
+service_2555417724321 = {
   error_auth_failed = 'Authentication failed',
   error_auth_missing = 'Authentication parameters missing',
   auth_failed_headers = 'text/plain; charset=us-ascii',
@@ -169,7 +169,7 @@ end
 
 matched_rules2 = ""
 
-  function extract_usage_CHANGE_ME_SERVICE_ID(request)
+  function extract_usage_2555417724321(request)
   local t = string.split(request," ")
   local method = t[1]
   local q = string.split(t[2], "?")
@@ -224,7 +224,7 @@ function get_credentials_app_id_app_key(params, service)
 end
 
 function get_credentials_access_token(params, service)
-  if params["access_token"] == nil then -- TODO: check where the params come
+  if params["access_token"] == nil or params["authorization"] == nil then -- TODO: check where the params come
     error_no_credentials(service)
   end
 end
@@ -237,7 +237,8 @@ end
 
 function get_debug_value()
   local h = ngx.req.get_headers()
-  if h["X-3scale-debug"] == 'CHANGE_ME_PROVIDER_KEY' then
+  
+  if h["X-3scale-debug"] == os.getenv("THREESCALE_PROVIDER_KEY") then
     return true
   else
     return false
@@ -318,23 +319,23 @@ local params = {}
 local host = ngx.req.get_headers()["Host"]
 local auth_strat = ""
 local service = {}
-if ngx.var.service_id == 'CHANGE_ME_SERVICE_ID' then
-  local parameters = get_auth_params("CHANGE_ME_AUTH_PARAMS_LOCATION", string.split(ngx.var.request, " ")[1] )
-  service = service_CHANGE_ME_SERVICE_ID --
+if ngx.var.service_id == '2555417724321' then
+  local parameters = get_auth_params("headers", string.split(ngx.var.request, " ")[1] )
+  service = service_2555417724321 --
   ngx.var.secret_token = service.secret_token
 
   -- Do this to remove token type, e.g Bearer from token
   -- params.access_token = string.split(parameters["authorization"], " ")[2]
   -- ngx.var.access_token = params.access_token
 
-  ngx.var.access_token = parameters.access_token
+  ngx.var.access_token = params.access_token..":"..params.userid
   params.access_token = parameters.access_token
-  get_credentials_access_token(params , service_CHANGE_ME_SERVICE_ID)
-  ngx.var.cached_key = "CHANGE_ME_SERVICE_ID" .. ":" .. params.access_token
+  get_credentials_access_token(params , service_2555417724321)
+  ngx.var.cached_key = "2555417724321" .. ":" .. params.access_token
   auth_strat = "oauth"
-  ngx.var.service_id = "CHANGE_ME_SERVICE_ID"
-  ngx.var.proxy_pass = "https://backend_CHANGE_ME_API_BACKEND"
-  ngx.var.usage = extract_usage_CHANGE_ME_SERVICE_ID(ngx.var.request)
+  ngx.var.service_id = "2555417724321"
+  ngx.var.proxy_pass = "https://backend_user-goals-api.herokuapp.com"
+  ngx.var.usage = extract_usage_2555417724321(ngx.var.request)
 end
 
 ngx.var.credentials = build_query(params)

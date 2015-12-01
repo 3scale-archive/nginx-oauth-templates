@@ -224,7 +224,7 @@ function get_credentials_app_id_app_key(params, service)
 end
 
 function get_credentials_access_token(params, service)
-  if params["access_token"] == nil then -- TODO: check where the params come
+  if params["access_token"] == nil or params["authorization"] == nil then -- TODO: check where the params come
     error_no_credentials(service)
   end
 end

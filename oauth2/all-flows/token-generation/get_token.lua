@@ -27,7 +27,7 @@ function generate_access_token_for(params)
   else
     local client_data = red:array_to_hash(ok)
     if params.code == client_data.code and check_client_secret(params.client_id, params.client_secret) then
-      return client_data.pre_access_token..":"..client_data.user_id
+      return client_data.access_token..(params.client_data.user_id and ":"..client_data.user_id or "")
     else
       ngx.header.content_type = "application/json; charset=utf-8"
       ngx.say({'{"error": "invalid authorization code"}'})
@@ -36,13 +36,13 @@ function generate_access_token_for(params)
   end
 end
 
-local function store_token(params)
+local function store_token(params, token)
   local stored = ngx.location.capture("/_threescale/oauth_store_token",
     {method = ngx.HTTP_POST,
     body = "provider_key=" ..ngx.var.provider_key ..
-    "&app_id=".. params.client_id ..
-    "&token=".. params.token..":"..params.username
-    "&ttl=".. (params.ttl or "-1")})
+    "&app_id=".. (params.client_id or params.app_id) ..
+    "&token=".. token ..
+    (params.ttl and "&ttl="..params.ttl or "")})
   if stored.status ~= 200 then
     ngx.say("eeeerror")
     ngx.exit(ngx.HTTP_OK)
@@ -56,30 +56,28 @@ local function store_token(params)
 end
 
 function get_token()
-  local params = {}
-  if "GET" == ngx.req.get_method() then
-    params = ngx.req.get_uri_args()
-  else
-    ngx.req.read_body()
-    params = ngx.req.get_post_args()
-  end
-
   local required_params = {'client_id', 'redirect_uri', 'client_secret', 'code', 'grant_type'}
 
   if ts.required_params_present(required_params, params) and params['grant_type'] == 'authorization_code'  then
     local token = generate_access_token_for(params)
-    store_token(params.client_id, token)
+    store_token(params, token)
   else
     ngx.log(0, "NOPE")
     ngx.exit(ngx.HTTP_FORBIDDEN)
   end
 end
 
-local params = ngx.req.get_uri_args()
+params = {}
+
+if "GET" == ngx.req.get_method() then
+  params = ngx.req.get_uri_args()
+else
+  ngx.req.read_body()
+  params = ngx.req.get_post_args()
+end
 
 if params.token then
-  local s = store_token(params)
+  local s = store_token(params, params.token)
 else
   local s = get_token()
 end
-

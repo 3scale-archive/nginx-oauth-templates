@@ -8,7 +8,7 @@ if ngx.status == 403  then
 end
 
 
-service_2555417724321 = {
+service_CHANGE_ME_SERVICE_ID = {
   error_auth_failed = 'Authentication failed',
   error_auth_missing = 'Authentication parameters missing',
   auth_failed_headers = 'text/plain; charset=us-ascii',
@@ -169,7 +169,7 @@ end
 
 matched_rules2 = ""
 
-  function extract_usage_2555417724321(request)
+  function extract_usage_CHANGE_ME_SERVICE_ID(request)
   local t = string.split(request," ")
   local method = t[1]
   local q = string.split(t[2], "?")
@@ -266,7 +266,7 @@ function oauth(params, service)
     local res = ngx.location.capture("/_threescale/toauth_authorize?access_token="..
       params.access_token ..
       "&user_id="..
-      params.access_token,
+      (params.userid or params.access_token),
       { share_all_vars = true })
 
     if res.status == 200   then
@@ -319,9 +319,9 @@ local params = {}
 local host = ngx.req.get_headers()["Host"]
 local auth_strat = ""
 local service = {}
-if ngx.var.service_id == '2555417724321' then
+if ngx.var.service_id == 'CHANGE_ME_SERVICE_ID' then
   local parameters = get_auth_params("headers", string.split(ngx.var.request, " ")[1] )
-  service = service_2555417724321 --
+  service = service_CHANGE_ME_SERVICE_ID --
   ngx.var.secret_token = service.secret_token
 
   -- Do this to remove token type, e.g Bearer from token
@@ -330,12 +330,12 @@ if ngx.var.service_id == '2555417724321' then
 
   ngx.var.access_token = params.access_token..":"..params.userid
   params.access_token = parameters.access_token
-  get_credentials_access_token(params , service_2555417724321)
-  ngx.var.cached_key = "2555417724321" .. ":" .. params.access_token
+  get_credentials_access_token(params , service_CHANGE_ME_SERVICE_ID)
+  ngx.var.cached_key = "CHANGE_ME_SERVICE_ID" .. ":" .. params.access_token
   auth_strat = "oauth"
-  ngx.var.service_id = "2555417724321"
+  ngx.var.service_id = "CHANGE_ME_SERVICE_ID"
   ngx.var.proxy_pass = "https://backend_user-goals-api.herokuapp.com"
-  ngx.var.usage = extract_usage_2555417724321(ngx.var.request)
+  ngx.var.usage = extract_usage_CHANGE_ME_SERVICE_ID(ngx.var.request)
 end
 
 ngx.var.credentials = build_query(params)

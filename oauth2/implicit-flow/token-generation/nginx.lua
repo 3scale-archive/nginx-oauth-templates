@@ -267,10 +267,7 @@ function oauth(params, service)
       ngx.header.content_type = "application/json"
       ngx.var.cached_key = nil
       error_authorization_failed(service)
-    else
-      access_tokens:set(ngx.var.cached_key,200)
   end
-
     ngx.var.cached_key = nil
   end
 end

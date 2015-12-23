@@ -268,7 +268,6 @@ function oauth(params, service)
       ngx.var.cached_key = nil
       error_authorization_failed(service)
     end
-
     ngx.var.cached_key = nil
   end
 end

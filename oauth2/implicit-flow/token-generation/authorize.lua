@@ -51,9 +51,9 @@ function redirect_to_login(params)
 
   params.scope = params.scope
   ts.connect_redis(red)
-   local token = generate_access_token(params.client_id)
+   local pre_token = generate_access_token(params.client_id)
 
-   local ok, err = red:hmset(ngx.var.service_id .. "#state:".. n,
+   local ok, err = red:hmset(ngx.var.service_id .. "#tmp_data:".. n,
     {client_id = params.client_id,
     redirect_uri = params.redirect_uri,
 			      plan_id = params.scope,

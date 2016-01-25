@@ -1,6 +1,13 @@
 -- -*- mode: lua; -*-
 -- Version:
 -- Error Messages per service
+
+if ngx.status == 403  then
+  ngx.say("Throttling due to too many requests")
+  ngx.exit(403)
+end
+
+
 service_CHANGE_ME_SERVICE_ID = {
   error_auth_failed = 'Authentication failed',
   error_auth_missing = 'Authentication parameters missing',
@@ -13,6 +20,7 @@ service_CHANGE_ME_SERVICE_ID = {
   auth_missing_status = 403,
 secret_token = 'Shared_secret_sent_from_proxy_to_API_backend'
 }
+
 
 -- Logging Helpers
 function show_table(a)
@@ -75,6 +83,7 @@ function string:split(delimiter)
   local result = { }
   local from = 1
   local delim_from, delim_to = string.find( self, delimiter, from )
+  if delim_from == nil then return {self} end
   while delim_from do
     table.insert( result, string.sub( self, from , delim_from-1 ) )
     from = delim_to + 1
@@ -108,6 +117,7 @@ function build_querystring(query)
   end
   return string.sub(qstr, 0, #qstr-1)
 end
+
 
 ---
 -- Builds a query string from a table.
@@ -160,7 +170,6 @@ end
 matched_rules2 = ""
 
 function extract_usage_CHANGE_ME_SERVICE_ID(request)
-
   local t = string.split(request," ")
   local method = t[1]
   local q = string.split(t[2], "?")
@@ -177,6 +186,7 @@ function extract_usage_CHANGE_ME_SERVICE_ID(request)
   local m =  ngx.re.match(path,[=[^/]=])
   if (m and method == "GET") then
      -- rule: / --
+          
      table.insert(matched_rules, "/")
 
      usage_t["hits"] = set_or_inc(usage_t, "hits", 1)
@@ -206,7 +216,6 @@ function get_auth_params(where, method)
     ngx.req.read_body()
     params = ngx.req.get_post_args()
   end
-  
   return first_values(params)
 end
 
@@ -301,6 +310,7 @@ function add_trans(usage)
   return string.sub(ret, 1, -2)
 end
 
+
 local params = {}
 local host = ngx.req.get_headers()["Host"]
 local auth_strat = ""
@@ -323,6 +333,12 @@ end
 
 ngx.var.credentials = build_query(params)
 
+-- if true then
+--   log(ngx.var.app_id)
+--   log(ngx.var.app_key)
+--   log(ngx.var.usage)
+-- end
+
 -- WHAT TO DO IF NO USAGE CAN BE DERIVED FROM THE REQUEST.
 if ngx.var.usage == nil then
   ngx.header["X-3scale-matched-rules"] = ''
@@ -333,7 +349,11 @@ if get_debug_value() then
   ngx.header["X-3scale-matched-rules"] = matched_rules2
   ngx.header["X-3scale-credentials"] = ngx.var.credentials
   ngx.header["X-3scale-usage"] = ngx.var.usage
+  ngx.header["X-3scale-hostname"]      = ngx.var.hostname
 end
+
+-- this would be better with the whole authrep call, with user_id, and everything so that
+-- it can be replayed if it's a cached response
 
 authorize(auth_strat, params, service)
 

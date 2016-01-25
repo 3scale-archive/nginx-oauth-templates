@@ -172,7 +172,8 @@ function extract_usage_CHANGE_ME_SERVICE_ID(request)
 
   local t = string.split(request," ")
   local method = t[1]
-  local path = t[2]
+  local q = string.split(t[2], "?")
+  local path = q[1]
   local found = false
   local usage_t =  {}
   local m = ""
@@ -229,7 +230,7 @@ function get_credentials_app_id_app_key(params, service)
 end
 
 function get_credentials_access_token(params, service)
-  if params["access_token"] == nil then -- TODO: check where the params come
+  if params["access_token"] == nil and params["authorization"] == nil then -- TODO: check where the params come
     error_no_credentials(service)
   end
 end
@@ -259,31 +260,26 @@ function authorize(auth_strat, params, service)
 end
 
 function oauth(params, service)
-  if ngx.var.usage ~= nil  then
-    ngx.var.usage = add_trans(ngx.var.usage)
-  end
-
   ngx.var.cached_key = ngx.var.cached_key .. ":" .. ngx.var.usage
   local access_tokens = ngx.shared.api_keys
   local is_known = access_tokens:get(ngx.var.cached_key)
 
   if is_known ~= 200 then
-  local res = ngx.location.capture("/_threescale/toauth_authorize?access_token="..
-    params.access_token ..
-    "&user_id="..
-    params.access_token,
-    { share_all_vars = true })
-  
-  if res.status ~= 200   then
+    local res = ngx.location.capture("/threescale_oauth_authrep", { share_all_vars = true })
+
+    -- IN HERE YOU DEFINE THE ERROR IF CREDENTIALS ARE PASSED, BUT THEY ARE NOT VALID
+    if res.status ~= 200 then
       access_tokens:delete(ngx.var.cached_key)
       ngx.status = res.status
       ngx.header.content_type = "application/json"
+      ngx.var.cached_key = nil
       error_authorization_failed(service)
     else
       access_tokens:set(ngx.var.cached_key,200)
-  end
+    end
+
     ngx.var.cached_key = nil
-end
+  end
 end
 
 function authrep(params, service)
@@ -300,6 +296,7 @@ function authrep(params, service)
       api_keys:delete(ngx.var.cached_key)
       ngx.status = res.status
       ngx.header.content_type = "application/json"
+            ngx.var.cached_key = nil
       error_authorization_failed(service)
     else
       api_keys:set(ngx.var.cached_key,200)

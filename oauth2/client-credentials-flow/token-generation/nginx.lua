@@ -169,7 +169,7 @@ end
 
 matched_rules2 = ""
 
-  function extract_usage_CHANGE_ME_SERVICE_ID(request)
+function extract_usage_CHANGE_ME_SERVICE_ID(request)
   local t = string.split(request," ")
   local method = t[1]
   local q = string.split(t[2], "?")
@@ -352,6 +352,9 @@ if get_debug_value() then
   ngx.header["X-3scale-usage"]         = ngx.var.usage
   ngx.header["X-3scale-hostname"]      = ngx.var.hostname
 end
+
+-- this would be better with the whole authrep call, with user_id, and everything so that
+-- it can be replayed if it's a cached response
 
 authorize(auth_strat, params, service)
 

@@ -183,9 +183,9 @@ matched_rules2 = ""
   local args = get_auth_params(nil, method)
     local m =  ngx.re.match(path,[=[^/]=])
   if (m and method == "GET") then
-  -- rule: / --
+     -- rule: / --
           
-      table.insert(matched_rules, "/")
+     table.insert(matched_rules, "/")
 
       usage_t["hits"] = set_or_inc(usage_t, "hits", 1)
       found = true
@@ -352,6 +352,9 @@ if get_debug_value() then
   ngx.header["X-3scale-usage"]         = ngx.var.usage
   ngx.header["X-3scale-hostname"]      = ngx.var.hostname
 end
+
+-- this would be better with the whole authrep call, with user_id, and everything so that
+-- it can be replayed if it's a cached response
 
 authorize(auth_strat, params, service)
 

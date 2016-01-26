@@ -169,7 +169,7 @@ end
 
 matched_rules2 = ""
 
-  function extract_usage_CHANGE_ME_SERVICE_ID(request)
+function extract_usage_CHANGE_ME_SERVICE_ID(request)
   local t = string.split(request," ")
   local method = t[1]
   local q = string.split(t[2], "?")
@@ -181,11 +181,13 @@ matched_rules2 = ""
   local params = {}
 
   local args = get_auth_params(nil, method)
-    local m =  ngx.re.match(path,[=[^/]=])
+
+  -- mapping rules go here, e.g
+  local m =  ngx.re.match(path,[=[^/]=])
   if (m and method == "GET") then
-  -- rule: / --
+     -- rule: / --
           
-      table.insert(matched_rules, "/")
+     table.insert(matched_rules, "/")
 
       usage_t["hits"] = set_or_inc(usage_t, "hits", 1)
       found = true
@@ -193,8 +195,8 @@ matched_rules2 = ""
 
   -- if there was no match, usage is set to nil and it will respond a 404, this behavior can be changed
   if found then
-   matched_rules2 = table.concat(matched_rules, ", ")
-   return build_querystring(usage_t)
+    matched_rules2 = table.concat(matched_rules, ", ")
+    return build_querystring(usage_t)
   else
     return nil
   end
@@ -349,6 +351,9 @@ if get_debug_value() then
   ngx.header["X-3scale-usage"]         = ngx.var.usage
   ngx.header["X-3scale-hostname"]      = ngx.var.hostname
 end
+
+-- this would be better with the whole authrep call, with user_id, and everything so that
+-- it can be replayed if it's a cached response
 
 authorize(auth_strat, params, service)
 

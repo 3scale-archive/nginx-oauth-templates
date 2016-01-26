@@ -263,7 +263,7 @@ function oauth(params, service)
   local is_known = access_tokens:get(ngx.var.cached_key)
 
   if is_known ~= 200 then
-    local res = ngx.location.capture("/_threescale/toauth_authorize?access_token="..
+    local res = ngx.location.capture("/threescale_oauth_authorize?access_token="..
       params.access_token ..
       "&user_id="..
       (params.userid or params.access_token),

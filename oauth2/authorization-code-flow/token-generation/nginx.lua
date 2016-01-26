@@ -13,12 +13,12 @@ service_CHANGE_ME_SERVICE_ID = {
   error_auth_missing = 'Authentication parameters missing',
   auth_failed_headers = 'text/plain; charset=us-ascii',
   auth_missing_headers = 'text/plain; charset=us-ascii',
-  error_no_match = 'No Mapping Rule matched',
+  error_no_match = 'No rule matched',
   no_match_headers = 'text/plain; charset=us-ascii',
   no_match_status = 404,
   auth_failed_status = 403,
   auth_missing_status = 403,
-  secret_token = 'Shared_secret_sent_from_proxy_to_API_backend_CHANGE_ME'
+  secret_token = 'Shared_secret_sent_from_proxy_to_API_backend'
 }
 
 
@@ -181,6 +181,8 @@ function extract_usage_CHANGE_ME_SERVICE_ID(request)
   local params = {}
 
   local args = get_auth_params(nil, method)
+
+  -- mapping rules go here, e.g
     local m =  ngx.re.match(path,[=[^/]=])
   if (m and method == "GET") then
      -- rule: / --
@@ -267,7 +269,10 @@ function oauth(params, service)
       ngx.header.content_type = "application/json"
       ngx.var.cached_key = nil
       error_authorization_failed(service)
+    else
+      access_tokens:set(ngx.var.cached_key,200)
     end
+
     ngx.var.cached_key = nil
   end
 end

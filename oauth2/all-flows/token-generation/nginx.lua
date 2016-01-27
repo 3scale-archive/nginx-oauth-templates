@@ -13,12 +13,12 @@ service_CHANGE_ME_SERVICE_ID = {
   error_auth_missing = 'Authentication parameters missing',
   auth_failed_headers = 'text/plain; charset=us-ascii',
   auth_missing_headers = 'text/plain; charset=us-ascii',
-  error_no_match = 'No Mapping Rule matched',
+  error_no_match = 'No rule matched',
   no_match_headers = 'text/plain; charset=us-ascii',
   no_match_status = 404,
   auth_failed_status = 403,
   auth_missing_status = 403,
-  secret_token = 'Shared_secret_sent_from_proxy_to_API_backend_CHANGE_ME'
+  secret_token = 'Shared_secret_sent_from_proxy_to_API_backend'
 }
 
 
@@ -181,6 +181,8 @@ matched_rules2 = ""
   local params = {}
 
   local args = get_auth_params(nil, method)
+
+  -- mapping rules go here, e.g
     local m =  ngx.re.match(path,[=[^/]=])
   if (m and method == "GET") then
   -- rule: / --
@@ -224,7 +226,7 @@ function get_credentials_app_id_app_key(params, service)
 end
 
 function get_credentials_access_token(params, service)
-  if params["access_token"] == nil or params["authorization"] == nil then -- TODO: check where the params come
+  if params["access_token"] == nil and params["authorization"] == nil then -- TODO: check where the params come
     error_no_credentials(service)
   end
 end
@@ -237,8 +239,7 @@ end
 
 function get_debug_value()
   local h = ngx.req.get_headers()
-  
-  if h["X-3scale-debug"] == os.getenv("THREESCALE_PROVIDER_KEY") then
+  if h["X-3scale-debug"] == 'CHANGE_ME_PROVIDER_KEY' then
     return true
   else
     return false
@@ -254,29 +255,24 @@ function authorize(auth_strat, params, service)
 end
 
 function oauth(params, service)
-  if ngx.var.usage ~= nil  then
-    ngx.var.usage = add_trans(ngx.var.usage)
-  end
-
   ngx.var.cached_key = ngx.var.cached_key .. ":" .. ngx.var.usage
   local access_tokens = ngx.shared.api_keys
   local is_known = access_tokens:get(ngx.var.cached_key)
 
   if is_known ~= 200 then
-    local res = ngx.location.capture("/threescale_oauth_authorize?access_token="..
-      params.access_token ..
-      "&user_id="..
-      (params.userid or params.access_token),
-      { share_all_vars = true })
+    local res = ngx.location.capture("/threescale_oauth_authrep", { share_all_vars = true })
 
-    if res.status == 200   then
-      access_tokens:set(ngx.var.cached_key,200)
-    else
+    -- IN HERE YOU DEFINE THE ERROR IF CREDENTIALS ARE PASSED, BUT THEY ARE NOT VALID
+    if res.status ~= 200   then
       access_tokens:delete(ngx.var.cached_key)
       ngx.status = res.status
       ngx.header.content_type = "application/json"
+      ngx.var.cached_key = nil
       error_authorization_failed(service)
+    else
+      access_tokens:set(ngx.var.cached_key,200)
     end
+
     ngx.var.cached_key = nil
   end
 end
@@ -320,7 +316,7 @@ local host = ngx.req.get_headers()["Host"]
 local auth_strat = ""
 local service = {}
 if ngx.var.service_id == 'CHANGE_ME_SERVICE_ID' then
-  local parameters = get_auth_params("headers", string.split(ngx.var.request, " ")[1] )
+  local parameters = get_auth_params("CHANGE_ME_AUTH_PARAMS_LOCATION", string.split(ngx.var.request, " ")[1] )
   service = service_CHANGE_ME_SERVICE_ID --
   ngx.var.secret_token = service.secret_token
 
@@ -328,13 +324,13 @@ if ngx.var.service_id == 'CHANGE_ME_SERVICE_ID' then
   -- params.access_token = string.split(parameters["authorization"], " ")[2]
   -- ngx.var.access_token = params.access_token
 
-  ngx.var.access_token = params.access_token..":"..params.userid
+  ngx.var.access_token = parameters.access_token
   params.access_token = parameters.access_token
   get_credentials_access_token(params , service_CHANGE_ME_SERVICE_ID)
   ngx.var.cached_key = "CHANGE_ME_SERVICE_ID" .. ":" .. params.access_token
   auth_strat = "oauth"
   ngx.var.service_id = "CHANGE_ME_SERVICE_ID"
-  ngx.var.proxy_pass = "https://backend_user-goals-api.herokuapp.com"
+  ngx.var.proxy_pass = "https://backend_CHANGE_ME_API_BACKEND"
   ngx.var.usage = extract_usage_CHANGE_ME_SERVICE_ID(ngx.var.request)
 end
 
@@ -358,6 +354,9 @@ if get_debug_value() then
   ngx.header["X-3scale-usage"]         = ngx.var.usage
   ngx.header["X-3scale-hostname"]      = ngx.var.hostname
 end
+
+-- this would be better with the whole authrep call, with user_id, and everything so that
+-- it can be replayed if it's a cached response
 
 authorize(auth_strat, params, service)
 

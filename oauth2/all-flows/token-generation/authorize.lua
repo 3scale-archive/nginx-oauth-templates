@@ -20,17 +20,14 @@ function authorize(params)
    -- is the user trying to log to
   local required_params = {'client_id', 'redirect_uri', 'response_type', 'scope'}
 
-  if ts.required_params_present(required_params, params) and
-    params["response_type"] == 'token' and
-    check_return_url(params.client_id, params.redirect_uri) then
-    redirect_to_login(params)
-  elseif params["response_type"] ~= 'token' then
-    return false, 'unsupported_response_type'
-  else
-    ngx.log(0, ts.dump(params))
-    return false, 'invalid_request'
-  end
-  ts.error("we should never be here")
+   if ts.required_params_present(required_params, params) and
+      (params["response_type"] == 'code' or params["response_type"] == 'token') and
+      check_return_url(params.client_id, params.redirect_uri) then
+      redirect_to_login(params)
+   else
+      return false, 'invalid_request'
+   end
+   ts.error("we should never be here")
 end
 
 -- returns a unique string for the client_id. it will be short lived
@@ -51,9 +48,9 @@ function redirect_to_login(params)
 
   params.scope = params.scope
   ts.connect_redis(red)
-   local pre_token = generate_access_token(params.client_id)
+   local token = generate_access_token(params.client_id)
 
-   local ok, err = red:hmset(ngx.var.service_id .. "#tmp_data:".. n,
+   local ok, err = red:hmset(ngx.var.service_id .. "#state:".. n,
     {client_id = params.client_id,
     redirect_uri = params.redirect_uri,
 			      plan_id = params.scope,
@@ -65,7 +62,7 @@ function redirect_to_login(params)
 
    -- TODO: If the login_url has already the parameter state bad
    -- things are to happen
-   ngx.redirect(ngx.var.login_url .. "?scope=".. params.scope .. "&state=" .. n)
+   ngx.redirect(ngx.var.login_url .. "?scope=".. params.scope .. "&state=" .. n .. "&response_type=" .. params.response_type)
    ngx.exit(ngx.HTTP_OK)
 end
 

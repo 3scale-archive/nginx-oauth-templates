@@ -1,24 +1,19 @@
 -- -*- mode: lua; -*-
 -- Version:
 -- Error Messages per service
-
-if ngx.status == 403  then
-  ngx.say("Throttling due to too many requests")
-  ngx.exit(403)
-end
-
+local _M = {}
 
 service_CHANGE_ME_SERVICE_ID = {
-error_auth_failed = 'Authentication failed',
-error_auth_missing = 'Authentication parameters missing',
-auth_failed_headers = 'text/plain; charset=us-ascii',
-auth_missing_headers = 'text/plain; charset=us-ascii',
-error_no_match = 'No rule matched',
-no_match_headers = 'text/plain; charset=us-ascii',
-no_match_status = 404,
-auth_failed_status = 403,
-auth_missing_status = 403,
-secret_token = 'Shared_secret_sent_from_proxy_to_API_backend'
+  error_auth_failed = 'Authentication failed',
+  error_auth_missing = 'Authentication parameters missing',
+  auth_failed_headers = 'text/plain; charset=us-ascii',
+  auth_missing_headers = 'text/plain; charset=us-ascii',
+  error_no_match = 'No Mapping Rule matched',
+  no_match_headers = 'text/plain; charset=us-ascii',
+  no_match_status = 404,
+  auth_failed_status = 403,
+  auth_missing_status = 403,
+  secret_token = 'Shared_secret_sent_from_proxy_to_API_backend'
 }
 
 
@@ -189,10 +184,10 @@ function extract_usage_CHANGE_ME_SERVICE_ID(request)
           
      table.insert(matched_rules, "/")
 
-     usage_t["hits"] = set_or_inc(usage_t, "hits", 1)
-     found = true
-  end
-  
+      usage_t["hits"] = set_or_inc(usage_t, "hits", 1)
+      found = true
+      end
+
   -- if there was no match, usage is set to nil and it will respond a 404, this behavior can be changed
   if found then
     matched_rules2 = table.concat(matched_rules, ", ")
@@ -294,10 +289,10 @@ function authrep(params, service)
             ngx.var.cached_key = nil
       error_authorization_failed(service)
     else
-      api_keys:set(ngx.var.cached_key,200)
+            api_keys:set(ngx.var.cached_key,200)
     end
 
-    ngx.var.cached_key = nil
+        ngx.var.cached_key = nil
   end
 end
 
@@ -307,27 +302,37 @@ function add_trans(usage)
   for i,v in ipairs(us) do
     ret =  ret .. "transactions[0][usage]" .. string.sub(v, 6) .. "&"
   end
-    return string.sub(ret, 1, -2)
+  return string.sub(ret, 1, -2)
 end
 
 
+function _M.access()
 local params = {}
 local host = ngx.req.get_headers()["Host"]
 local auth_strat = ""
 local service = {}
+
+  if ngx.status == 403  then
+    ngx.say("Throttling due to too many requests")
+    ngx.exit(403)
+  end
+
 if ngx.var.service_id == 'CHANGE_ME_SERVICE_ID' then
   local parameters = get_auth_params("CHANGE_ME_AUTH_PARAMS_LOCATION", string.split(ngx.var.request, " ")[1] )
   service = service_CHANGE_ME_SERVICE_ID --
   ngx.var.secret_token = service.secret_token
 
   -- Do this to remove token type, e.g Bearer from token
-  params.access_token = string.split(parameters["authorization"], " ")[2]
-  ngx.var.access_token = params.access_token
-  get_credentials_access_token(params, service_CHANGE_ME_SERVICE_ID)
+  -- params.access_token = string.split(parameters["authorization"], " ")[2]
+  -- ngx.var.access_token = params.access_token
+
+  ngx.var.access_token = parameters.access_token
+  params.access_token = parameters.access_token
+  get_credentials_access_token(params , service_CHANGE_ME_SERVICE_ID)
   ngx.var.cached_key = "CHANGE_ME_SERVICE_ID" .. ":" .. params.access_token
   auth_strat = "oauth"
   ngx.var.service_id = "CHANGE_ME_SERVICE_ID"
-  ngx.var.proxy_pass = "https://CHANGE_ME_API_BACKEND"
+  ngx.var.proxy_pass = "https://backend_CHANGE_ME_API_BACKEND"
   ngx.var.usage = extract_usage_CHANGE_ME_SERVICE_ID(ngx.var.request)
 end
 
@@ -356,5 +361,30 @@ end
 -- it can be replayed if it's a cached response
 
 authorize(auth_strat, params, service)
+
+end
+
+
+function _M.post_action_content()
+  local method, path, headers = ngx.req.get_method(), ngx.var.request_uri, ngx.req.get_headers()
+
+  local req = cjson.encode{method=method, path=path, headers=headers}
+  local resp = cjson.encode{ body = ngx.var.resp_body, headers = cjson.decode(ngx.var.resp_headers)}
+
+  local cached_key = ngx.var.cached_key
+  if cached_key ~= nil and cached_key ~= "null" then
+    local status_code = ngx.var.status
+          local res1 = ngx.location.capture("/threescale_oauth_authrep?code=".. status_code .. "&req=" .. ngx.escape_uri(req) .. "&resp=" .. ngx.escape_uri(resp), { share_all_vars = true })
+    if res1.status ~= 200 then
+            local access_tokens = ngx.shared.api_keys
+            access_tokens:delete(cached_key)
+    end
+  end
+
+  ngx.exit(ngx.HTTP_OK)
+end
+
+
+return _M
 
 -- END OF SCRIPT

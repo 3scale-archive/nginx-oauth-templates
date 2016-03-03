@@ -1,19 +1,14 @@
 -- -*- mode: lua; -*-
 -- Version:
 -- Error Messages per service
-
-if ngx.status == 403  then
-  ngx.say("Throttling due to too many requests")
-  ngx.exit(403)
-end
-
+local _M = {}
 
 service_CHANGE_ME_SERVICE_ID = {
   error_auth_failed = 'Authentication failed',
   error_auth_missing = 'Authentication parameters missing',
   auth_failed_headers = 'text/plain; charset=us-ascii',
   auth_missing_headers = 'text/plain; charset=us-ascii',
-  error_no_match = 'No rule matched',
+  error_no_match = 'No Mapping Rule matched',
   no_match_headers = 'text/plain; charset=us-ascii',
   no_match_status = 404,
   auth_failed_status = 403,
@@ -311,10 +306,17 @@ function add_trans(usage)
 end
 
 
+function _M.access()
 local params = {}
 local host = ngx.req.get_headers()["Host"]
 local auth_strat = ""
 local service = {}
+
+  if ngx.status == 403  then
+    ngx.say("Throttling due to too many requests")
+    ngx.exit(403)
+  end
+
 if ngx.var.service_id == 'CHANGE_ME_SERVICE_ID' then
   local parameters = get_auth_params("CHANGE_ME_AUTH_PARAMS_LOCATION", string.split(ngx.var.request, " ")[1] )
   service = service_CHANGE_ME_SERVICE_ID --
@@ -359,5 +361,30 @@ end
 -- it can be replayed if it's a cached response
 
 authorize(auth_strat, params, service)
+
+end
+
+
+function _M.post_action_content()
+  local method, path, headers = ngx.req.get_method(), ngx.var.request_uri, ngx.req.get_headers()
+
+  local req = cjson.encode{method=method, path=path, headers=headers}
+  local resp = cjson.encode{ body = ngx.var.resp_body, headers = cjson.decode(ngx.var.resp_headers)}
+
+  local cached_key = ngx.var.cached_key
+  if cached_key ~= nil and cached_key ~= "null" then
+    local status_code = ngx.var.status
+    local res1 = ngx.location.capture("/threescale_authrep?code=".. status_code .. "&req=" .. ngx.escape_uri(req) .. "&resp=" .. ngx.escape_uri(resp), { share_all_vars = true })
+    if res1.status ~= 200 then
+      local api_keys = ngx.shared.api_keys
+      api_keys:delete(cached_key)
+    end
+  end
+
+  ngx.exit(ngx.HTTP_OK)
+end
+
+
+return _M
 
 -- END OF SCRIPT

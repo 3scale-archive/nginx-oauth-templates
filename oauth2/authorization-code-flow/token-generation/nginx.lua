@@ -265,7 +265,19 @@ function oauth(params, service)
       ngx.var.cached_key = nil
       error_authorization_failed(service)
     else
+    -- If required: extract user_id token belongs to and compare with value from auth response
+    -- local user_id = res.body:match('user_id="(%S-)">'..access_token)
+    -- if user_id == params.user_id then 
+      -- Set this value if you need to send user_id back to your API
+      -- ngx.var.user_id = user_id
       access_tokens:set(ngx.var.cached_key,200)
+    -- else
+      -- access_tokens:delete(ngx.var.cached_key)
+      -- ngx.status = res.status
+      -- ngx.header.content_type = "application/json"
+      -- ngx.var.cached_key = nil
+      -- error_authorization_failed(service)
+    -- end
     end
 
     ngx.var.cached_key = nil
@@ -307,10 +319,10 @@ end
 
 
 function _M.access()
-local params = {}
-local host = ngx.req.get_headers()["Host"]
-local auth_strat = ""
-local service = {}
+  local params = {}
+  local host = ngx.req.get_headers()["Host"]
+  local auth_strat = ""
+  local service = {}
 
   if ngx.status == 403  then
     ngx.say("Throttling due to too many requests")
@@ -322,66 +334,67 @@ if ngx.var.service_id == 'CHANGE_ME_SERVICE_ID' then
   service = service_CHANGE_ME_SERVICE_ID --
   ngx.var.secret_token = service.secret_token
 
-  -- Do this to remove token type, e.g Bearer from token
+  -- If relevant, extract user_id from request
+  -- e.g local user_id =  ngx.re.match(ngx.var.uri,[=[^/api/user/([\w_\.-]+)\.json]=])
+  -- params.user_id = user_id
+
+  -- Do this to extract token from Authorization: Bearer <access_token> header
   -- params.access_token = string.split(parameters["authorization"], " ")[2]
   -- ngx.var.access_token = params.access_token
 
   ngx.var.access_token = parameters.access_token
   params.access_token = parameters.access_token
   get_credentials_access_token(params , service_CHANGE_ME_SERVICE_ID)
-  ngx.var.cached_key = "CHANGE_ME_SERVICE_ID" .. ":" .. params.access_token
+  ngx.var.cached_key = "CHANGE_ME_SERVICE_ID" .. ":" .. params.access_token .. ( params.user_id and  ":" .. params.user_id or "" )
   auth_strat = "oauth"
   ngx.var.service_id = "CHANGE_ME_SERVICE_ID"
   ngx.var.proxy_pass = "https://backend_CHANGE_ME_API_BACKEND"
   ngx.var.usage = extract_usage_CHANGE_ME_SERVICE_ID(ngx.var.request)
 end
 
-ngx.var.credentials = build_query(params)
+  ngx.var.credentials = build_query(params)
 
--- if true then
---   log(ngx.var.app_id)
---   log(ngx.var.app_key)
---   log(ngx.var.usage)
--- end
+  -- if true then
+  --   log(ngx.var.app_id)
+  --   log(ngx.var.app_key)
+  --   log(ngx.var.usage)
+  -- end
 
--- WHAT TO DO IF NO USAGE CAN BE DERIVED FROM THE REQUEST.
-if ngx.var.usage == nil then
-  ngx.header["X-3scale-matched-rules"] = ''
-  error_no_match(service)
-end
+  -- WHAT TO DO IF NO USAGE CAN BE DERIVED FROM THE REQUEST.
+  if ngx.var.usage == nil then
+    ngx.header["X-3scale-matched-rules"] = ''
+    error_no_match(service)
+  end
 
-if get_debug_value() then
-  ngx.header["X-3scale-matched-rules"] = matched_rules2
-  ngx.header["X-3scale-credentials"]   = ngx.var.credentials
-  ngx.header["X-3scale-usage"]         = ngx.var.usage
-  ngx.header["X-3scale-hostname"]      = ngx.var.hostname
-end
+  if get_debug_value() then
+    ngx.header["X-3scale-matched-rules"] = matched_rules2
+    ngx.header["X-3scale-credentials"]   = ngx.var.credentials
+    ngx.header["X-3scale-usage"]         = ngx.var.usage
+    ngx.header["X-3scale-hostname"]      = ngx.var.hostname
+  end
 
--- this would be better with the whole authrep call, with user_id, and everything so that
--- it can be replayed if it's a cached response
-
-authorize(auth_strat, params, service)
+  authorize(auth_strat, params, service)
 
 end
 
 
 function _M.post_action_content()
-        local method, path, headers = ngx.req.get_method(), ngx.var.request_uri, ngx.req.get_headers()
+  local method, path, headers = ngx.req.get_method(), ngx.var.request_uri, ngx.req.get_headers()
 
-        local req = cjson.encode{method=method, path=path, headers=headers}
-        local resp = cjson.encode{ body = ngx.var.resp_body, headers = cjson.decode(ngx.var.resp_headers)}
+  local req = cjson.encode{method=method, path=path, headers=headers}
+  local resp = cjson.encode{ body = ngx.var.resp_body, headers = cjson.decode(ngx.var.resp_headers)}
 
-        local cached_key = ngx.var.cached_key
-        if cached_key ~= nil and cached_key ~= "null" then
-          local status_code = ngx.var.status
-          local res1 = ngx.location.capture("/threescale_oauth_authrep?code=".. status_code .. "&req=" .. ngx.escape_uri(req) .. "&resp=" .. ngx.escape_uri(resp), { share_all_vars = true })
-          if res1.status ~= 200 then
-            local access_tokens = ngx.shared.api_keys
-            access_tokens:delete(cached_key)
-          end
-        end
+  local cached_key = ngx.var.cached_key
+  if cached_key ~= nil and cached_key ~= "null" then
+    local status_code = ngx.var.status
+    local res1 = ngx.location.capture("/threescale_oauth_authrep?code=".. status_code .. "&req=" .. ngx.escape_uri(req) .. "&resp=" .. ngx.escape_uri(resp), { share_all_vars = true })
+    if res1.status ~= 200 then
+      local access_tokens = ngx.shared.api_keys
+      access_tokens:delete(cached_key)
+    end
+  end
 
-        ngx.exit(ngx.HTTP_OK)
+  ngx.exit(ngx.HTTP_OK)
 end
 
 

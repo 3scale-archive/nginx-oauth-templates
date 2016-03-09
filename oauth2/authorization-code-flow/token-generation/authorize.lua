@@ -5,9 +5,8 @@ local red = redis:new()
 
 -- Checks that the return url matches the one specified by the client identified by client_id
 function check_return_url(client_id, return_url)
-  local res = ngx.location.capture("/_threescale/redirect_uri_matches",
-				  { vars = { red_url = return_url ,
-				    	     client_id = client_id }})
+  local res = ngx.location.capture("/_threescale/check_credentials",
+				  { args =  "redirect_uri="..return_url.."&app_id="..client_id })
   return (res.status == 200)
 end
 

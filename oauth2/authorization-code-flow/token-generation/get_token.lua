@@ -4,10 +4,9 @@ local ts = require 'threescale_utils'
 
 
 function check_client_credentials(params)
-  local res = ngx.location.capture("/_threescale/client_secret_matches",
-				  { args="app_id="..params.client_id.."&app_key="..params.client_secret, share_all_vars = true })
-  local secret = res.body:match("<key>([^<]+)</key>")
-  return (params.secret == secret)
+  local res = ngx.location.capture("/_threescale/check_credentials",
+				  { args=params, share_all_vars = true })
+  return res
 end
 
 -- Returns the access token (stored in redis) for the client identified by the id
@@ -75,7 +74,7 @@ end
 -- Check valid client_id / secret first in back end
 local exists = check_client_credentials(params)
 
-if exists then
+if exists.status ~=200 then
   get_token(params)
 else
   ngx.status = 401

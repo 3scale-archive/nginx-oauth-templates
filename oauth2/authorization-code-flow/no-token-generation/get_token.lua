@@ -9,7 +9,6 @@ function check_client_credentials(params)
 end
 
 local function store_token(client_id, token)
-  
   local stored = ngx.location.capture("/_threescale/oauth_store_token", 
     {method = ngx.HTTP_POST,
     body = "provider_key=" ..ngx.var.provider_key ..

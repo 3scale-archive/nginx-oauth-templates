@@ -20,7 +20,7 @@ function generate_token(params)
     return ngx.exit(ngx.HTTP_OK)
   else
     local client_data = red:array_to_hash(ok)
-    if params.code == client_data.code and check_client_secret(params.client_id, params.client_secret) then
+    if params.code == client_data.code and check_client_credentials(params) then
       return client_data.pre_access_token
     else
       ngx.header.content_type = "application/json; charset=utf-8"

@@ -8,7 +8,7 @@ function check_client_credentials(params)
 end
 
 function generate_token(params)
- return ts.sha1_digest(ngx.time() .. params.client_id)
+ return ts.sha1_digest(math.random() .. params.client_id)
 end
 
 local function store_token(client_id, token)

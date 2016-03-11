@@ -32,7 +32,7 @@ if ts.required_params_present({'state', 'response_type'}, params) then
    red:del(tmp_data)
 
   if params.response_type == 'code' then
-    local code = ts.sha1_digest(ngx.time() .. "#code:" .. client_data.client_id)
+    local code = ts.sha1_digest(math.random() .. "#code:" .. client_data.client_id)
      ok, err =  red:hmset("c:".. client_data.client_id, {client_id = client_data.client_id,
 						       client_secret = client_data.secret_id,
 						       redirect_uri = client_data.redirect_uri,

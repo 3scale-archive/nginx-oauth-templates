@@ -12,7 +12,7 @@ function check_client_secret(client_id, secret)
 end
 
 function generate_token(client_id)
-   return ts.sha1_digest(ngx.time() .. client_id)
+   return ts.sha1_digest(math.random() .. client_id)
 end
 
 -- Returns the access token (stored in redis) for the client identified by the id

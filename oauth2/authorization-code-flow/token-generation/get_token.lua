@@ -13,7 +13,7 @@ end
 -- This needs to be called within a minute of it being stored, as it expires and is deleted
 function generate_token(params)
   local ok, err = red:connect("127.0.0.1", 6379)
-  ok, err =  red:hgetall("c:".. params.client_id)
+  ok, err =  red:hgetall("c:".. params.code)
   
   if ok[1] == nil then
     ngx.say("expired_code")

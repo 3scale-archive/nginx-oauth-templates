@@ -1,3 +1,4 @@
+local random = require 'resty.random'
 local ts = require 'threescale_utils'
 
 function check_client_credentials(params)
@@ -8,7 +9,7 @@ function check_client_credentials(params)
 end
 
 function generate_token(params)
- return ts.sha1_digest(math.random() .. params.client_id)
+ return ts.sha1_digest(tostring(random.bytes(20, true))  .. params.client_id)
 end
 
 local function store_token(client_id, token)

@@ -1,3 +1,4 @@
+local random = require 'resty.random'
 local cjson = require 'cjson'
 local ts = require 'threescale_utils'
 local redis = require 'resty.redis'
@@ -34,11 +35,11 @@ end
 
 -- returns a unique string for the client_id. it will be short lived
 function nonce(client_id)
-   return ts.sha1_digest(math.random() .. "#login:" .. client_id)
+   return ts.sha1_digest(tostring(random.bytes(20, true)) .. "#login:" .. client_id)
 end
 
 function generate_access_token(client_id)
-   return ts.sha1_digest(math.random() .. client_id)
+   return ts.sha1_digest(tostring(random.bytes(20, true)) .. client_id)
 end
 
 -- redirects_to the login form of the API provider with a secret

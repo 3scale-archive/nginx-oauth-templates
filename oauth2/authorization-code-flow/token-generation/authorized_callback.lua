@@ -4,7 +4,7 @@
 -- login, the provider is supposed to send the client (via redirect)
 -- to this endpoint, with the same status code that we sent him at the
 -- moment of the first redirect
-
+local random = require 'resty.random'
 local cjson = require 'cjson'
 local ts = require 'threescale_utils'
 local redis = require 'resty.redis'
@@ -31,14 +31,14 @@ if ts.required_params_present({'state'}, params) then
    -- Delete the tmp_data:
    red:del(tmp_data)
 
-   local code = ts.sha1_digest(math.random() .. "#code:" .. client_data.client_id)
-   ok, err =  red:hmset("c:".. client_data.client_id, {client_id = client_data.client_id,
+   local code = ts.sha1_digest(tostring(random.bytes(20, true)) .. "#code:" .. client_data.client_id)
+   ok, err =  red:hmset("c:".. code, {client_id = client_data.client_id,
 						       client_secret = client_data.secret_id,
 						       redirect_uri = client_data.redirect_uri,
 						       pre_access_token = client_data.pre_access_token,
 						       code = code })
 
-   ok, err =  red:expire("c:".. client_data.client_id, 60 * 10) -- code expires in 10 mins
+   ok, err =  red:expire("c:".. code, 60 * 10) -- code expires in 10 mins
 
    if not ok then
       ngx.say("failed to hmset: ", err)

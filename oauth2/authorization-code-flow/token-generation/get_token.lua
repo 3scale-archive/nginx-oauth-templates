@@ -49,7 +49,7 @@ local function store_token(client_id, access_token, expires_in)
   end
 
   ngx.header.content_type = "application/json; charset=utf-8"
-  ngx.say({'{"access_token": "'.. token .. '", "token_type": "bearer"}'})
+  ngx.say({'{"access_token": "'.. access_token .. '", "token_type": "bearer"}'})
   ngx.exit(ngx.HTTP_OK)
 end
 

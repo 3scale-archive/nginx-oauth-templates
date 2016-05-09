@@ -30,21 +30,20 @@ function generate_token(params)
   end
 end
 
-local function store_token(client_id, token)
+local function store_token(client_id, token, expires_in)
   local stored = ngx.location.capture("/_threescale/oauth_store_token",
     {method = ngx.HTTP_POST,
     body = "provider_key=" ..ngx.var.provider_key ..
     "&app_id=".. client_id ..
-    "&token=".. token..
-    "&ttl=604800"})
-  
+    "&token=".. access_token..
+    "&ttl="..(expires_in or "604800")})
   if stored.status ~= 200 then
     ngx.say('{"error":"invalid_request"}')
     ngx.exit(ngx.HTTP_OK)
   end
 
   ngx.header.content_type = "application/json; charset=utf-8"
-  ngx.say('{"access_token": "'.. token .. '", "token_type": "bearer", "expires_in":604800}')
+  ngx.say('{"access_token": "'.. token .. '", "token_type": "bearer", "expires_in":'..(expires_in or "604800")..'}')
   ngx.exit(ngx.HTTP_OK)
 end
 

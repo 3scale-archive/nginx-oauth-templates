@@ -1,64 +1,79 @@
+local ts = require 'threescale_utils'
 local redis = require 'resty.redis'
 local red = redis:new()
-local ts = require 'threescale_utils'
 
-
+-- Check valid params ( client_id / secret / redirect_url, whichever are sent) against 3scale
 function check_client_credentials(params)
   local res = ngx.location.capture("/_threescale/check_credentials",
 				  { args=params, share_all_vars = true })
-  return res
+  return res.status == 200
 end
 
--- Returns the access token (stored in redis) for the client identified by the id
--- This needs to be called within a minute of it being stored, as it expires and is deleted
-function generate_token(params)
-  local ok, err = red:connect("127.0.0.1", 6379)
-  ok, err =  red:hgetall("c:".. params.code)
-  
-  if ok[1] == nil then
-    ngx.say("expired_code")
-    return ngx.exit(ngx.HTTP_OK)
+-- Get the token from Redis
+function get_token(params)
+  local required_params = {'client_id', 'client_secret', 'grant_type', 'code', 'redirect_uri'}
+
+  local res = {}
+
+  if ts.required_params_present(required_params, params) and params['grant_type'] == 'authorization_code'  then
+    res = request_token(params)
   else
-    local client_data = red:array_to_hash(ok)
-    if params.code == client_data.code and check_client_credentials(params) then
-      return client_data.pre_access_token
+    res = { ["status"] = 403, ["body"] = '{"error": "invalid_request"}' }
+  end
+
+  if res.status ~= 200 then
+    ngx.status = res.status
+    ngx.header.content_type = "application/json; charset=utf-8"
+    ngx.print(res.body)
+    ngx.exit(ngx.HTTP_FORBIDDEN)
+  else
+    local token = res.body
+    local stored = store_token(params.client_id, token)
+
+    if stored.status ~= 200 then
+      ngx.say('{"error":"'..stored.body..'"}')
+      ngx.status = stored.status
+      ngx.exit(ngx.HTTP_OK)
     else
-      ngx.header.content_type = "application/json; charset=utf-8"
-      ngx.say({'{"error": "invalid authorization code"}'})
-      return ngx.exit(ngx.HTTP_FORBIDDEN)
+      send_token(token)
     end
   end
 end
 
-local function store_token(client_id, token, expires_in)
+-- Returns the access token (stored in redis) for the client identified by the id
+-- This needs to be called within a minute of it being stored, as it expires and is deleted
+function request_token(params)
+  local ok, err = red:connect("127.0.0.1", 6379)
+  ok, err =  red:hgetall("c:".. params.code)
+  
+  if ok[1] == nil then
+    return { ["status"] = 403, ["body"] = '{"error": "expired_code"}' }
+  else
+    local client_data = red:array_to_hash(ok)
+    if params.code == client_data.code then
+      return { ["status"] = 200, ["body"] = client_data.pre_access_token }
+    else
+      return { ["status"] = 403, ["body"] = '{"error": "invalid authorization code"}' }
+    end
+  end
+end
+
+-- Stores the token in 3scale. You can change the default ttl value of 604800 seconds (7 days) to your desired ttl.
+function store_token(client_id, token)
   local stored = ngx.location.capture("/_threescale/oauth_store_token",
     {method = ngx.HTTP_POST,
     body = "provider_key=" ..ngx.var.provider_key ..
     "&app_id=".. client_id ..
-    "&token=".. access_token..
-    "&ttl="..(expires_in or "604800")})
-  if stored.status ~= 200 then
-    ngx.say('{"error":"invalid_request"}')
-    ngx.exit(ngx.HTTP_OK)
-  end
-
-  ngx.header.content_type = "application/json; charset=utf-8"
-  ngx.say('{"access_token": "'.. token .. '", "token_type": "bearer", "expires_in":'..(expires_in or "604800")..'}')
-  ngx.exit(ngx.HTTP_OK)
+    "&token=".. token..
+    "&ttl=604800")})
+  return stored
 end
 
-function get_token(params)
-  local required_params = {'client_id', 'redirect_uri', 'client_secret', 'code', 'grant_type'}
-
-  if ts.required_params_present(required_params, params) and params['grant_type'] == 'authorization_code'  then
-    local token = generate_token(params)
-    store_token(params.client_id, token)
-  else
-    ngx.status = res.status
-    ngx.header.content_type = "application/json; charset=utf-8"
-    ngx.print('{"error":"invalid_request"}')
-    ngx.exit(ngx.HTTP_FORBIDDEN)
-  end
+-- Returns the token to the client
+function send_token(token)
+  ngx.header.content_type = "application/json; charset=utf-8"
+  ngx.say('{"access_token": "'.. token .. '", "token_type": "bearer", "expires_in":604800 }')
+  ngx.exit(ngx.HTTP_OK)
 end
 
 local params = {}
@@ -70,10 +85,9 @@ else
   params = ngx.req.get_post_args()
 end
 
--- Check valid client_id / secret first in back end
 local exists = check_client_credentials(params)
 
-if exists.status ~=200 then
+if exists then
   get_token(params)
 else
   ngx.status = 401

@@ -6,8 +6,8 @@ local red = redis:new()
 -- Check valid params ( client_id / secret / redirect_url, whichever are sent) against 3scale
 function check_client_credentials(params)
   local res = ngx.location.capture("/_threescale/check_credentials",
-              { args=( params.client_id and "app_id="..params.client_id or "" )..
-          ( params.client_secret and "app_key="..params.client_secret or "" )..
+              { args=( params.client_id and "app_id="..params.client_id.."&" or "" )..
+          ( params.client_secret and "app_key="..params.client_secret.."&" or "" )..
           ( ( params.redirect_uri or params.redirect_url ) and "redirect_uri="..( params.redirect_uri or params.redirect_url ) or "" ), 
           copy_all_vars = true })
   return res.status == 200
@@ -72,7 +72,10 @@ local exists = check_client_credentials(params)
 
 if exists then
   local ok, err = authorize(params)
-  ngx.redirect(ngx.var.auth_url .. "?scope=" .. params.scope .. "&state=" .. (params.state or '') .. "&error=".. err)
+
+  if not ok then
+    ngx.redirect(ngx.var.auth_url .. "?scope=" .. params.scope .. "&state=" .. (params.state or '') .. "&error=".. err)
+  end
 else
   ngx.redirect(ngx.var.auth_url .. "?scope=" .. params.scope .. "&state=" .. (params.state or '') .. "&error=invalid_client")
 end

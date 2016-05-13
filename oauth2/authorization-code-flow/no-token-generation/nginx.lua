@@ -307,10 +307,10 @@ end
 
 
 function _M.access()
-local params = {}
-local host = ngx.req.get_headers()["Host"]
-local auth_strat = ""
-local service = {}
+  local params = {}
+  local host = ngx.req.get_headers()["Host"]
+  local auth_strat = ""
+  local service = {}
 
   if ngx.status == 403  then
     ngx.say("Throttling due to too many requests")
@@ -374,10 +374,10 @@ function _M.post_action_content()
   local cached_key = ngx.var.cached_key
   if cached_key ~= nil and cached_key ~= "null" then
     local status_code = ngx.var.status
-          local res1 = ngx.location.capture("/threescale_oauth_authrep?code=".. status_code .. "&req=" .. ngx.escape_uri(req) .. "&resp=" .. ngx.escape_uri(resp), { share_all_vars = true })
+    local res1 = ngx.location.capture("/threescale_oauth_authrep?code=".. status_code .. "&req=" .. ngx.escape_uri(req) .. "&resp=" .. ngx.escape_uri(resp), { share_all_vars = true })
     if res1.status ~= 200 then
-            local access_tokens = ngx.shared.api_keys
-            access_tokens:delete(cached_key)
+      local access_tokens = ngx.shared.api_keys
+      access_tokens:delete(cached_key)
     end
   end
 

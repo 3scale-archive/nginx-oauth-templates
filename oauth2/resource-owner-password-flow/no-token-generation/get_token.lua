@@ -1,61 +1,78 @@
 local cjson = require 'cjson'
 local ts = require 'threescale_utils'
 
+-- Check valid params ( client_id / secret / redirect_url, whichever are sent) against 3scale
 function check_client_credentials(params)
-  local res = ngx.location.capture("/_threescale/client_secret_matches",
-          { args="app_id="..params.client_id.."&app_key="..params.client_secret, share_all_vars = true })
-  local secret = res.body:match("<key>([^<]+)</key>")
-  return (params.secret == secret)
+  local res = ngx.location.capture("/_threescale/check_credentials",
+              { args=( params.client_id and "app_id="..params.client_id.."&" or "" )..
+                     ( params.client_secret and "app_key="..params.client_secret.."&" or "" )..
+          ( ( params.redirect_uri or params.redirect_url ) and "redirect_uri="..( params.redirect_uri or params.redirect_url ) or "" ), 
+          copy_all_vars = true })
+  return res.status == 200
 end
 
-local function store_token(client_id, token)
-  local stored = ngx.location.capture("/_threescale/oauth_store_token",
-    {method = ngx.HTTP_POST,
-    body = "provider_key=" ..ngx.var.provider_key ..
-    "&app_id=".. client_id ..
-    "&token=".. token.access_token..
-    "&ttl=".. token.expires_in or "-1"})
-
-  if stored.status ~= 200 then
-    ngx.say('{"error":"invalid_request"}')
-    ngx.exit(ngx.HTTP_OK)
-  end
-
-  ngx.header.content_type = "application/json; charset=utf-8"
-  ngx.say(cjson.encode(token))
-  ngx.exit(ngx.HTTP_OK)
-end
-
+-- Get the token from the OAuth Server
 function get_token(params)
   local access_token_required_params = {'username', 'password', 'grant_type'}
   local refresh_token_required_params =  {'client_id', 'client_secret', 'grant_type', 'refresh_token'}
+  
   local res = {}
   
-  if ts.required_params_present(access_token_required_params, params) and params['grant_type'] == 'password' then
-    res = ngx.location.capture("/_oauth/token", 
-      { method = ngx.HTTP_POST, 
-      body = "username="..params.username..
-      "&password="..params.password} )
-  elseif ts.required_params_present(refresh_token_required_params, params) and params['grant_type'] == 'refresh_token' then
-    res = ngx.location.capture("/_oauth/token", 
-      { method = ngx.HTTP_POST, 
-      body = "client_id="..params.client_id..
-      "&client_secret="..params.client_secret..
-      "&grant_type="..params.grant_type..
-      "&refresh_token="..params.refresh_token})
+  if (ts.required_params_present(access_token_required_params, params) and params['grant_type'] == 'password') or 
+    (ts.required_params_present(refresh_token_required_params, params) and params['grant_type'] == 'refresh_token') then
+    res = request_token(params)
   else
-    res = { ["status"] = "403", ["body"] = "invalid_request" }
+    res = { ["status"] = 403, ["body"] = '{"error": "invalid_request"}'  }
   end
 
   if res.status ~= 200 then
     ngx.status = res.status
     ngx.header.content_type = "application/json; charset=utf-8"
-    ngx.print('{"error":"' .. res.body .. '"}')
+    ngx.print(res.body)
     ngx.exit(ngx.HTTP_FORBIDDEN)
   else
-    token = cjson.decode(res.body)
-    store_token(params.client_id, token)
+    local token = parse_token(res.body)
+    local stored = store_token(params.client_id, token)
+
+    if stored.status ~= 200 then
+      ngx.say('{"error":"'..stored.body..'"}')
+      ngx.status = stored.status
+      ngx.exit(ngx.HTTP_OK)
+    else
+      send_token(token)
+    end
   end
+end
+
+-- Calls the token endpoint to request a token
+-- TODO: Add Basic Auth header when sending username/pwd
+function request_token(params)
+  local res = ngx.location.capture("/_oauth/token", { method = ngx.HTTP_POST, copy_all_vars = true })
+  return { ["status"] = res.status, ["body"] = res.body }
+end
+
+-- Parses the token - in this case we assume a json encoded token. This function may be overwritten to parse different token formats.
+function parse_token(body)
+  local token = cjson.decode(res.body)
+  return token
+end
+
+-- Stores the token in 3scale. You can change the default ttl value of 604800 seconds (7 days) to your desired ttl.
+function store_token(client_id, token)
+  local stored = ngx.location.capture("/_threescale/oauth_store_token", 
+    {method = ngx.HTTP_POST,
+    body = "provider_key=" ..ngx.var.provider_key ..
+    "&app_id=".. client_id ..
+    "&token=".. token.access_token..
+    "&ttl="..(token.expires_in or "604800")})
+  return stored
+end
+
+-- Returns the token to the client
+function send_token(token)
+  ngx.header.content_type = "application/json; charset=utf-8"
+  ngx.say(cjson.encode(token))
+  ngx.exit(ngx.HTTP_OK)
 end
 
 local params = {}
@@ -67,7 +84,6 @@ else
   params = ngx.req.get_post_args()
 end
 
--- Check valid client_id / secret first in back end
 local exists = check_client_credentials(params)
 
 if exists then

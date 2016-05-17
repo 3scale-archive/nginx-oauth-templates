@@ -1,5 +1,6 @@
 local cjson = require 'cjson'
 local ts = require 'threescale_utils'
+local random = require 'resty.random'
 
 -- As per RFC for Resource Owner Password flow: extract params from Authorization header and body
 -- If implementation deviates from RFC, this function should be over-ridden
@@ -37,8 +38,9 @@ end
 
 -- Calls the login endpoint to verify user credentials
 function check_user_credentials(params)
-  local body = '{"type": "basic", "value": "'..ngx.encode_base64(params.username..':'..params.password)..'" }'
-  local res = ngx.location.capture("/_login", { method = ngx.HTTP_POST,  body = body})
+  local body = "CHANGE_ME_REQUEST_PARAMS"
+  -- e.g local body = '{"type": "basic", "value": "'..ngx.encode_base64(params.username..':'..params.password)..'" }'
+  local res = ngx.location.capture("/_idp/check_credentials", { method = ngx.HTTP_POST,  body = body})
 
   if res.status ~= 200 then
     ngx.status = res.status
@@ -71,10 +73,11 @@ end
 function get_token(params)
   local required_params = {'username', 'password', 'grant_type'}
   local res = {}
+  local token = {}
 
-  if ts.required_params_present(access_token_required_params, params) and params['grant_type'] == 'password' then
-    local token = generate_token(params)
-    res = store_token(params.client_id, token)
+  if ts.required_params_present(required_params, params) and params['grant_type'] == 'password' then
+    token = generate_token(params.client_id)
+    res = store_token(params, token)
   else
     res = { ["status"] = 403, ["body"] = '{"error": "invalid_request"}'  }
   end

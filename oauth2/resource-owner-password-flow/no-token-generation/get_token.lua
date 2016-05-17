@@ -7,9 +7,11 @@ function extract_params()
   local params = {}
   local header_params = ngx.req.get_headers()
 
-  params.authorization = ngx.decode_base64(header_params['Authorization']:split(" ")[2])
-  params.client_id = params.authorization:split(":")[1]
-  params.client_secret = params.authorization:split(":")[2]
+  if header_params['Authorization'] then
+    params.authorization = ngx.decode_base64(header_params['Authorization']:split(" ")[2])
+    params.client_id = params.authorization:split(":")[1]
+    params.client_secret = params.authorization:split(":")[2]
+  end
 
   ngx.req.read_body()
   local body_params = ngx.req.get_post_args()
@@ -25,13 +27,27 @@ function extract_params()
   return params
 end
 
+-- Check valid credentials
+function check_credentials(params)
+  local res = check_client_credentials(params)
+  return res.status == 200
+end
+
 -- Check valid params ( client_id / secret / redirect_url, whichever are sent) against 3scale
 function check_client_credentials(params)
   local res = ngx.location.capture("/_threescale/check_credentials",
               { args=( params.client_id and "app_id="..params.client_id.."&" or "" )..
                      ( params.client_secret and "app_key="..params.client_secret.."&" or "" )..
                      ( params.redirect_uri and "redirect_uri="..params.redirect_uri or "" )})
-  return res.status == 200
+  
+  if res.status ~= 200 then   
+    ngx.status = 401
+    ngx.header.content_type = "application/json; charset=utf-8"
+    ngx.print('{"error":"invalid_client"}')
+    ngx.exit(ngx.HTTP_OK)
+  end
+
+  return { ["status"] = res.status, ["body"] = res.body }
 end
 
 -- Get the token from the OAuth Server
@@ -58,7 +74,7 @@ function get_token(params)
     local stored = store_token(params.client_id, token)
 
     if stored.status ~= 200 then
-      ngx.say('{"error":"'..stored.body..'"}')
+      ngx.say(stored.body)
       ngx.status = stored.status
       ngx.exit(ngx.HTTP_OK)
     else
@@ -88,7 +104,7 @@ function store_token(params, token)
     "&token=".. token.access_token ..
     "&user_id=".. params.username ..
     "&ttl="..(token.expires_in or "604800")})
-  return stored
+  return { ["status"] = stored.status , ["body"] = stored.body }
 end
 
 -- Returns the token to the client
@@ -100,13 +116,8 @@ end
 
 local params = extract_params()
 
-local exists = check_client_credentials(params)
+local exists = check_credentials(params)
 
 if exists then
   get_token(params)
-else
-  ngx.status = 401
-  ngx.header.content_type = "application/json; charset=utf-8"
-  ngx.print('{"error":"invalid_client"}')
-  ngx.exit(ngx.HTTP_OK)
 end

@@ -28,7 +28,7 @@ function extract_params()
   return params
 end
 
--- Check valid params ( client_id / secret / redirect_url, whichever are sent) against 3scale
+-- Check valid client and user credentials
 function check_credentials(params)
   local res_user = check_user_credentials(params)
   local res_client = check_client_credentials(params)
@@ -36,7 +36,7 @@ function check_credentials(params)
   return res_client.status == 200 and res_user.status == 200
 end
 
--- Calls the login endpoint to verify user credentials
+-- Check user credentials against IDP
 function check_user_credentials(params)
   local body = "CHANGE_ME_REQUEST_PARAMS"
   -- e.g local body = '{"type": "basic", "value": "'..ngx.encode_base64(params.username..':'..params.password)..'" }'
@@ -52,7 +52,7 @@ function check_user_credentials(params)
   return { ["status"] = res.status, ["body"] = res.body }
 end
 
-
+-- Check valid params ( client_id / secret / redirect_url, whichever are sent) against 3scale
 function check_client_credentials(params)
    local res = ngx.location.capture("/_threescale/check_credentials",
               { args=( params.client_id and "app_id="..params.client_id.."&" or "" )..
@@ -69,9 +69,10 @@ function check_client_credentials(params)
   return { ["status"] = res.status, ["body"] = res.body }
 end
 
--- Get the token from the OAuth Server
+-- Get the token from the Gateway
 function get_token(params)
   local required_params = {'username', 'password', 'grant_type'}
+  
   local res = {}
   local token = {}
 
@@ -92,6 +93,7 @@ function get_token(params)
   end
 end
 
+-- Generates a token 
 function generate_token(client_id)
   local token = ts.sha1_digest(tostring(random.bytes(20, true)) .. client_id)
   return { ["access_token"] = token, ["token_type"] = "bearer", ["expires_in"] = 604800 }

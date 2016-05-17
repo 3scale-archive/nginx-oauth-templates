@@ -95,12 +95,13 @@ function generate_token(client_id)
 end
 
 -- Stores the token in 3scale. You can change the default ttl value of 604800 seconds (7 days) to your desired ttl.
-function store_token(client_id, token)
+function store_token(params, token)
   local stored = ngx.location.capture("/_threescale/oauth_store_token", 
     {method = ngx.HTTP_POST,
     body = "provider_key=" ..ngx.var.provider_key ..
-    "&app_id=".. client_id ..
-    "&token=".. token.access_token..
+    "&app_id=".. params.client_id ..
+    "&token=".. token.access_token ..
+    "&user_id=".. params.username .. 
     "&ttl=".. token.expires_in })
   return { ["status"] = stored.status , ["body"] = stored.body }
 end

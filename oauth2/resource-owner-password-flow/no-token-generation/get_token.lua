@@ -1,8 +1,7 @@
 local cjson = require 'cjson'
 local ts = require 'threescale_utils'
-local inspect = require 'inspect'
 
--- As per RFC for Resource Owner Password flow: extract params from Basic header
+-- As per RFC for Resource Owner Password flow: extract params from Authorization header and body
 -- If implementation deviates from RFC, this function should be over-ridden
 function extract_params()
   local params = {}
@@ -18,7 +17,11 @@ function extract_params()
   params.grant_type = body_params.grant_type
   params.username = body_params.username
   params.password = body_params.password
-  
+
+  if params.grant_type == "refresh_token" then
+    params.refresh_token = body_params.refresh_token
+  end
+
   return params
 end
 
@@ -27,7 +30,7 @@ function check_client_credentials(params)
   local res = ngx.location.capture("/_threescale/check_credentials",
               { args=( params.client_id and "app_id="..params.client_id.."&" or "" )..
                      ( params.client_secret and "app_key="..params.client_secret.."&" or "" )..
-          ( ( params.redirect_uri or params.redirect_url ) and "redirect_uri="..( params.redirect_uri or params.redirect_url ) or "" )})
+                     ( params.redirect_uri and "redirect_uri="..params.redirect_uri or "" )})
   return res.status == 200
 end
 

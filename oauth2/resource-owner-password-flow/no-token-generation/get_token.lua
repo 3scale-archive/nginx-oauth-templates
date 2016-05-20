@@ -21,7 +21,10 @@ function get_token(params)
 
   if ts.required_params_present(required_params, params) and params['grant_type'] == 'password' then
     local res = ngx.location.capture("/_oauth/token",
-      { method = ngx.CHANGE_ME_HTTP_METHOD, args = "username="..params.username.."&password="..params.password..CHANGE_ME_ADDITIONAL_PARAMS} )
+      { method = ngx.CHANGE_ME_HTTP_METHOD,
+        args = { username = params.username, password = params.password, CHANGE_ME_ADDITIONAL_PARAMS = '' }
+      }
+    )
     if res.status ~= 200 then
       ngx.status = res.status
       ngx.header.content_type = "application/json; charset=utf-8"

@@ -61,7 +61,7 @@ function get_token(params)
     (ts.required_params_present(refresh_token_required_params, params) and params['grant_type'] == 'refresh_token') then
     res = request_token(params)
   else
-    res = { ["status"] = 403, ["body"] = '{"error": "invalid_request"}'  }
+    res = { ["status"] = 403, ["body"] = '{"error": "invalid_request"}' }
   end
 
   if res.status ~= 200 then

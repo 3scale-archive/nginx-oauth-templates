@@ -14,16 +14,13 @@ function extract_params()
   ngx.req.read_body()
   local body_params = ngx.req.get_post_args()
   
-  params.grant_type = body_params.grant_type
-
-  if body_params.redirect_uri then
-    params.redirect_uri = body_params.redirect_uri
-  end
+  params.grant_type = body_params.grant_type or nil
+  params.redirect_uri = body_params.redirect_uri or nil 
 
   if params.grant_type == "refresh_token" then
-    params.refresh_token = body_params.refresh_token
+    params.refresh_token = body_params.refresh_token or nil
   else
-    params.code = body_params.code
+    params.code = body_params.code or nil 
   end
 
   return params

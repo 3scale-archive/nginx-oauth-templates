@@ -9,21 +9,12 @@ function extract_params()
   local params = {}
   local uri_params = ngx.req.get_uri_args()
   
-  params.response_type = uri_params.response_type
-  params.client_id = uri_params.client_id
+  params.response_type = uri_params.response_type or nil
+  params.client_id = uri_params.client_id or nil
+  params.redirect_uri = uri_params.redirect_uri or nil
+  params.scope =  uri_params.scope or nil
+  params.state = uri_params.state or nil
   
-  if uri_params.redirect_uri then
-    params.redirect_uri = uri_params.redirect_uri
-  end
-
-  if uri_params.scope then
-    params.scope =  uri_params.scope
-  end
-
-  if uri_params.state then
-    params.state = uri_params.state
-  end
-
   return params
 end
 

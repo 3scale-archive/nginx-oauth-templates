@@ -17,7 +17,7 @@ function extract_params()
   ngx.req.read_body()
   local body_params = ngx.req.get_post_args()
   
-  params.grant_type = body_params.grant_type
+  params.grant_type = body_params.grant_type or nil 
 
   return params
 end

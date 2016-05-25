@@ -15,19 +15,11 @@ local red = redis:new()
 function extract_params()
   local params = {}
   local uri_params = ngx.req.get_uri_args()
-  
-  if uri_params.username then
-    params.username = uri_params.username
-  end
 
-  if uri_params.state then
-    params.state = uri_params.state
-  end
-  
+  params.username = uri_params.username or nil
+  params.state = uri_params.state or nil 
   -- In case state is no longer valid, authorization server might send this so we know where to redirect with error
-  if uri_params.redirect_uri then
-    params.redirect_uri = uri_params.redirect_uri
-  end
+  params.redirect_uri = uri_params.redirect_uri or nil 
   
   return params
 end
@@ -60,7 +52,7 @@ function get_token(params)
   local res = {}
   local token = {}
   
-  token = retrieve_token(params)
+  token = request_token(params)
   res = store_token(params, token)
  
   if res.status ~= 200 then
@@ -73,7 +65,7 @@ function get_token(params)
 end
 
 -- Retrieve client data from Redis
-function retrieve_token(params)
+function request_token(params)
   local tmp_data = ngx.var.service_id .. "#tmp_data:".. params.state
   
   ts.connect_redis(red)  

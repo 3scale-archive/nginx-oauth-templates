@@ -16,12 +16,12 @@ function extract_params()
   ngx.req.read_body()
   local body_params = ngx.req.get_post_args()
   
-  params.grant_type = body_params.grant_type
-  params.username = body_params.username
-  params.password = body_params.password
+  params.grant_type = body_params.grant_type or nil
+  params.username = body_params.username or nil
+  params.password = body_params.password or nil
 
   if params.grant_type == "refresh_token" then
-    params.refresh_token = body_params.refresh_token
+    params.refresh_token = body_params.refresh_token or nil
   end
 
   return params

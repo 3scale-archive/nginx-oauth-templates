@@ -112,7 +112,7 @@ end
 -- <code>value</code>.
 -- @return A query string (like <code>"name=value2&name=value2"</code>).
 -----------------------------------------------------------------------------
-function build_query(query)
+function M.build_query(query)
   local qstr = ""
 
   for i,v in pairs(query) do

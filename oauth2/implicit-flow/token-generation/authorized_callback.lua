@@ -64,8 +64,9 @@ function get_token(params)
   res = store_token(params, token)
  
   if res.status ~= 200 then
+    local error_code = res.body:match('<error code="(.*)">') 
     ngx.header.content_type = "application/x-www-form-urlencoded"
-    return ngx.redirect(token.redirect_uri .. "#error=server_error&error_description="..res.body)
+    return ngx.redirect(token.redirect_uri .. "#error=server_error&error_description="..error_code or res.body)
   else
     send_token(token)
   end
@@ -97,8 +98,9 @@ end
 
 -- Stores the token in 3scale. You can change the default ttl value of 604800 seconds (7 days) to your desired ttl.
 function store_token(params, token)
+  local body = ts.build_query({ app_id = token.client_id, token = token.access_token, user_id = params.username or nil, ttl = token.expires_in })
   local stored = ngx.location.capture( "/_threescale/oauth_store_token", 
-    { method = ngx.HTTP_POST, body = { provider_key = ngx.var.provider_key, app_id = token.client_id, token = token.access_token, user_id = params.username or nil , ttl = token.expires_in } } )
+    { method = ngx.HTTP_POST, body = body } )
   return { ["status"] = stored.status , ["body"] = stored.body }
 end
 

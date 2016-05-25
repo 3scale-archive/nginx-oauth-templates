@@ -68,7 +68,6 @@ function redirect_to_auth(params)
     local n = nonce(params.client_id)
     params.state = n 
 
-    params.scope = params.scope
     ts.connect_redis(red)
     local pre_token = generate_access_token(params.client_id)
     params.tok = pre_token
@@ -84,10 +83,10 @@ function redirect_to_auth(params)
     end
   end
 
-  local uri_params = ts.build_query(params)
+  local args = ts.build_query(params)
   
   ngx.header.content_type = "application/x-www-form-urlencoded"
-  return ngx.redirect( ngx.var.auth_url .. "?" .. uri_params )
+  return ngx.redirect( ngx.var.auth_url .. "?" .. args )
 end
 
 -- returns a unique string for the client_id. it will be short lived

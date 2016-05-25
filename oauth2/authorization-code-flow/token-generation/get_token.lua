@@ -91,7 +91,7 @@ function request_token(params)
   else
     local client_data = red:array_to_hash(ok)
     if params.code == client_data.code then
-      return { ["status"] = 200, ["body"] = { ["access_token"] = token, ["token_type"] = "bearer", ["expires_in"] = 604800 } }
+      return { ["status"] = 200, ["body"] = { ["access_token"] = client_data.access_token, ["token_type"] = "bearer", ["expires_in"] = 604800 } }
     else
       return { ["status"] = 403, ["body"] = '{"error": "invalid authorization code"}' }
     end

@@ -5,48 +5,114 @@
 -- to this endpoint, with the same status code that we sent him at the
 -- moment of the first redirect
 local random = require 'resty.random'
-local cjson = require 'cjson'
 local ts = require 'threescale_utils'
 local redis = require 'resty.redis'
 local red = redis:new()
 
-local ok, err
-local params = ngx.req.get_uri_args()
+-- The authorization server should send some data in the callback response to let the
+-- API Gateway know which user to associate with the token. 
+-- We assume that this data will be sent as uri params. 
+-- This function should be over-ridden depending on authorization server implementation.
+function extract_params()
+  local params = {}
+  local uri_params = ngx.req.get_uri_args()
+  
+  params.username = uri_params.username or nil
+  params.state = uri_params.state or nil 
+  -- In case state is no longer valid, authorization server might send this so we know where to redirect with error
+  params.redirect_uri = uri_params.redirect_uri or nil 
+  
+  return params
+end
 
-if ts.required_params_present({'state'}, params) then
-   ts.connect_redis(red)
-   local tmp_data = ngx.var.service_id .. "#tmp_data:".. params.state
-   ok , err = red:exists(tmp_data)
-   if 0 == ok then
-      -- TODO: Redirect? to the initial state?
-      ts.missing_args("state does not exist. Probably expired")
-   end
-   ok, err = red:hgetall(tmp_data)
-   if not ok then
-      ts.error("no values for tmp_data hash: ".. ts.dump(err))
-   end
+-- Check valid state parameter sent
+function check_state(params)
+  local required_params = {'state'}
 
-   local client_data = red:array_to_hash(ok)  -- restoring client data
+  local valid_state = false
+  if ts.required_params_present(required_params, params) then  
+    local tmp_data = ngx.var.service_id .. "#tmp_data:".. params.state
+    local ok = red:exists(tmp_data)
 
-   -- Delete the tmp_data:
-   red:del(tmp_data)
+    if ok == 0 then
+      ngx.header.content_type = "application/x-www-form-urlencoded"
+      return ngx.redirect(params.redirect_uri .. "#error=invalid_request&error_description=invalid_or_expired_state&state="..params.state)
+    end
 
-   local code = ts.sha1_digest(tostring(random.bytes(20, true)) .. "#code:" .. client_data.client_id)
-   ok, err =  red:hmset("c:".. code, {client_id = client_data.client_id,
-						       client_secret = client_data.secret_id,
-						       redirect_uri = client_data.redirect_uri,
-						       pre_access_token = client_data.pre_access_token,
-						       code = code })
+    valid_state = true
+  else
+    ngx.header.content_type = "application/x-www-form-urlencoded"
+    return ngx.redirect(params.redirect_uri .. "#error=invalid_request&error_description=missing_state")
+  end
 
-   ok, err =  red:expire("c:".. code, 60 * 10) -- code expires in 10 mins
+  return valid_state
+end
 
-   if not ok then
-      ngx.say("failed to hmset: ", err)
-      ngx.exit(ngx.HTTP_OK)
-   end
+-- Get Authorization Code
+function get_code(params)
+  local client_data = retrieve_client_data(params)
+  local code = generate_code(client_data)
 
-   ngx.req.set_header("Content-Type", "application/x-www-form-urlencoded")
-   return ngx.redirect(client_data.redirect_uri .. "?code="..code .. "&state=" .. (params.state or ""))
-else
-   ts.missing_args("{ 'error': '".. "invalid_client_data from login form" .. "'}")
+  local stored = store_code(client_data, params, code)
+
+  if stored then 
+    send_code(params, code)
+  end  
+end
+
+-- Retrieve client data from Redis
+function retrieve_client_data(params)
+  local tmp_data = ngx.var.service_id .. "#tmp_data:".. params.state
+
+  ts.connect_redis(red)  
+  local ok, err = red:hgetall(tmp_data)
+
+  if not ok then
+    ngx.log(0, "no values for tmp_data hash: ".. ts.dump(err))
+    ngx.header.content_type = "application/x-www-form-urlencoded"
+    return ngx.redirect(params.redirect_uri .. "#error=invalid_request&error_description=invalid_or_expired_state&state=" .. (params.state or ""))
+  end
+
+  -- Restore client data
+  local client_data = red:array_to_hash(ok)  -- restoring client data
+  -- Delete the tmp_data:
+  red:del(tmp_data)
+
+  return client_data
+end
+
+-- Generate authorization code from params
+function generate_code(client_data)
+  return ts.sha1_digest(tostring(random.bytes(20, true)) .. "#code:" .. client_data.client_id)
+end
+
+function store_code(client_data, params, code)
+  local ok, err =  red:hmset("c:".. code, {client_id = client_data.client_id,
+                         client_secret = client_data.secret_id,
+                         redirect_uri = client_data.redirect_uri,
+                         pre_access_token = client_data.pre_access_token,
+                         code = code })
+
+  ok, err =  red:expire("c:".. code, 60 * 10) -- code expires in 10 mins
+
+  if not ok then
+    ngx.header.content_type = "application/x-www-form-urlencoded"
+    return ngx.redirect(params.redirect_uri .. "?error=server_error&error_description=code_storage_failed&state=" .. (params.state or ""))
+  end
+
+  return ok
+end
+
+-- Returns the code to the client
+function send_code(params, code)
+  ngx.header.content_type = "application/x-www-form-urlencoded"
+  return ngx.redirect( params.redirect_uri .. "?code="..code.."&state=" .. (params.state or ""))
+end
+
+local params = extract_params()
+
+local exists = check_state(params)
+
+if exists then
+  get_code(params)
 end

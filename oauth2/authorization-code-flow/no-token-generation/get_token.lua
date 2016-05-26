@@ -1,4 +1,4 @@
-local cjson = require 'cjson'
+local cjson = require 'cjson'
 local ts = require 'threescale_utils'
 
 -- As per RFC for Authorization Code flow: extract params from Authorization header and body
@@ -14,13 +14,13 @@ function extract_params()
   ngx.req.read_body()
   local body_params = ngx.req.get_post_args()
   
-  params.grant_type = body_params.grant_type or nil
-  params.redirect_uri = body_params.redirect_uri or nil 
+  params.grant_type = body_params.grant_type 
+  params.redirect_uri = body_params.redirect_uri  
 
   if params.grant_type == "refresh_token" then
-    params.refresh_token = body_params.refresh_token or nil
+    params.refresh_token = body_params.refresh_token 
   else
-    params.code = body_params.code or nil 
+    params.code = body_params.code  
   end
 
   return params

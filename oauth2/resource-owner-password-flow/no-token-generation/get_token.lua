@@ -16,12 +16,12 @@ function extract_params()
   ngx.req.read_body()
   local body_params = ngx.req.get_post_args()
   
-  params.grant_type = body_params.grant_type or nil
-  params.username = body_params.username or nil
-  params.password = body_params.password or nil
+  params.grant_type = body_params.grant_type 
+  params.username = body_params.username 
+  params.password = body_params.password 
 
   if params.grant_type == "refresh_token" then
-    params.refresh_token = body_params.refresh_token or nil
+    params.refresh_token = body_params.refresh_token 
   end
 
   return params
@@ -36,7 +36,7 @@ end
 -- Check valid params ( client_id / secret / redirect_url, whichever are sent) against 3scale
 function check_client_credentials(params)
   local res = ngx.location.capture("/_threescale/check_credentials",
-              { args = { app_id = params.client_id or nil, app_key = params.client_secret or nil, redirect_uri = params.redirect_uri or nil } })
+              { args = { app_id = params.client_id , app_key = params.client_secret , redirect_uri = params.redirect_uri  } })
   
   if res.status ~= 200 then   
     ngx.status = 401

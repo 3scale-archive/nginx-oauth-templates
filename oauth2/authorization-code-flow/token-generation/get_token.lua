@@ -8,19 +8,22 @@ local red = redis:new()
 function extract_params()
   local params = {}
   local header_params = ngx.req.get_headers()
+  
+  params.authorization = {}
 
   if header_params['Authorization'] then
-    params.authorization = ngx.decode_base64(header_params['Authorization']:split(" ")[2])
-    params.client_id = params.authorization:split(":")[1]
-    params.client_secret = params.authorization:split(":")[2]
+    params.authorization = ngx.decode_base64(header_params['Authorization']:split(" ")[2]):split(":")
   end
 
   ngx.req.read_body()
   local body_params = ngx.req.get_post_args()
 
-  params.grant_type = body_params.grant_type or nil
-  params.code = body_params.code or nil 
-  params.redirect_uri = body_params.redirect_uri or nil 
+  params.client_id = params.authorization[1] or body_params.client_id
+  params.client_secret = params.authorization[2] or body_params.client_secret
+    
+  params.grant_type = body_params.grant_type
+  params.code = body_params.code
+  params.redirect_uri = body_params.redirect_uri or body_params.redirect_url 
 
   return params
 end
@@ -35,7 +38,7 @@ end
 -- Check valid params ( client_id / secret / redirect_url, whichever are sent) against 3scale
 function check_client_credentials(params)
   local res = ngx.location.capture("/_threescale/check_credentials",
-              { args = { app_id = params.client_id or nil, app_key = params.client_secret or nil, redirect_uri = params.redirect_uri or params.redirect_url or nil },
+              { args = { app_id = params.client_id, app_key = params.client_secret, redirect_uri = params.redirect_uri },
                 copy_all_vars = true })
 
   if res.status ~= 200 then   
@@ -68,12 +71,11 @@ function get_token(params)
     ngx.exit(ngx.HTTP_FORBIDDEN)
   else
     token = res.body
-    local stored = store_token(params.client_id, token)
+    local stored = store_token(params, token)
 
     if stored.status ~= 200 then
       ngx.say('{"error":"'..stored.body..'"}')
-      ngx.status = stored.status
-      ngx.exit(ngx.HTTP_OK)
+      ngx.exit(stored.status)
     else
       send_token(token)
     end
@@ -90,6 +92,7 @@ function request_token(params)
     return { ["status"] = 403, ["body"] = '{"error": "expired_code"}' }
   else
     local client_data = red:array_to_hash(ok)
+    params.user_id = client_data.user_id
     if params.code == client_data.code then
       return { ["status"] = 200, ["body"] = { ["access_token"] = client_data.access_token, ["token_type"] = "bearer", ["expires_in"] = 604800 } }
     else
@@ -100,9 +103,9 @@ end
 
 -- Stores the token in 3scale. You can change the default ttl value of 604800 seconds (7 days) to your desired ttl.
 function store_token(params, token)
-  local body = ts.build_query({ app_id = token.client_id, token = token.access_token, user_id = params.username or nil, ttl = token.expires_in })
-  local stored = ngx.location.capture( "/_threescale/oauth_store_token", 
-    { method = ngx.HTTP_POST, body = body } )
+  local body = ts.build_query({ app_id = params.client_id, token = token.access_token, user_id = params.user_id, ttl = token.expires_in })
+  local stored = ngx.location.capture( "/_threescale/oauth_store_token", { method = ngx.HTTP_POST, body = body } )
+  stored.body = stored.body or stored.status
   return { ["status"] = stored.status , ["body"] = stored.body }
 end
 

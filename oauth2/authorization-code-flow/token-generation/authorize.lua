@@ -9,11 +9,11 @@ function extract_params()
   local params = {}
   local uri_params = ngx.req.get_uri_args()
   
-  params.response_type = uri_params.response_type or nil
-  params.client_id = uri_params.client_id or nil 
-  params.redirect_uri = uri_params.redirect_uri or nil
-  params.scope =  uri_params.scope or nil 
-  params.state = uri_params.state or nil
+  params.response_type = uri_params.response_type
+  params.client_id = uri_params.client_id
+  params.redirect_uri = uri_params.redirect_uri
+  params.scope =  uri_params.scope
+  params.state = uri_params.state
 
   return params
 end
@@ -27,7 +27,7 @@ end
 -- Check valid params ( client_id / secret / redirect_url, whichever are sent) against 3scale
 function check_client_credentials(params)
   local res = ngx.location.capture("/_threescale/check_credentials",
-              { args = { app_id = params.client_id or nil, app_key = params.client_secret or nil, redirect_uri = params.redirect_uri or nil }})
+              { args = { app_id = params.client_id, app_key = params.client_secret, redirect_uri = params.redirect_uri }})
   
   if res.status ~= 200 then   
     params.error = "invalid_client"

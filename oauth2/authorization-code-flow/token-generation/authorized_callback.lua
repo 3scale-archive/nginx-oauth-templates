@@ -17,10 +17,10 @@ function extract_params()
   local params = {}
   local uri_params = ngx.req.get_uri_args()
   
-  params.username = uri_params.username or nil
-  params.state = uri_params.state or nil 
+  params.user_id = uri_params.user_id or uri_params.username
+  params.state = uri_params.state
   -- In case state is no longer valid, authorization server might send this so we know where to redirect with error
-  params.redirect_uri = uri_params.redirect_uri or nil 
+  params.redirect_uri = uri_params.redirect_uri or uri_params.redirect_url
   
   return params
 end
@@ -56,7 +56,7 @@ function get_code(params)
   local stored = store_code(client_data, params, code)
 
   if stored then 
-    send_code(params, code)
+    send_code(client_data, params, code)
   end  
 end
 
@@ -90,7 +90,8 @@ function store_code(client_data, params, code)
   local ok, err =  red:hmset("c:".. code, {client_id = client_data.client_id,
                          client_secret = client_data.secret_id,
                          redirect_uri = client_data.redirect_uri,
-                         pre_access_token = client_data.pre_access_token,
+                         access_token = client_data.access_token,
+                         user_id = params.user_id,
                          code = code })
 
   ok, err =  red:expire("c:".. code, 60 * 10) -- code expires in 10 mins
@@ -104,9 +105,9 @@ function store_code(client_data, params, code)
 end
 
 -- Returns the code to the client
-function send_code(params, code)
+function send_code(client_data, params, code)
   ngx.header.content_type = "application/x-www-form-urlencoded"
-  return ngx.redirect( params.redirect_uri .. "?code="..code.."&state=" .. (params.state or ""))
+  return ngx.redirect( client_data.redirect_uri .. "?code="..code.."&state=" .. (params.state or ""))
 end
 
 local params = extract_params()

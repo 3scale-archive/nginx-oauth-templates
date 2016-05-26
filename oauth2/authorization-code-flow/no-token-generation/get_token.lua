@@ -1,4 +1,4 @@
-local cjson = require 'cjson'
+local cjson = require 'cjson'
 local ts = require 'threescale_utils'
 
 -- As per RFC for Authorization Code flow: extract params from Authorization header and body
@@ -7,15 +7,20 @@ function extract_params()
   local params = {}
   local header_params = ngx.req.get_headers()
 
-  params.authorization = ngx.decode_base64(header_params['Authorization']:split(" ")[2])
-  params.client_id = params.authorization:split(":")[1]
-  params.client_secret = params.authorization:split(":")[2]
+  params.authorization = {}
+
+  if header_params['Authorization'] then
+    params.authorization = ngx.decode_base64(header_params['Authorization']:split(" ")[2]):split(":")
+  end
   
   ngx.req.read_body()
   local body_params = ngx.req.get_post_args()
   
+  params.client_id = params.authorization[1] or body_params.client_id
+  params.client_secret = params.authorization[2] or body_params.client_secret
+  
   params.grant_type = body_params.grant_type 
-  params.redirect_uri = body_params.redirect_uri  
+  params.redirect_uri = body_params.redirect_uri or body_params.redirect_url 
 
   if params.grant_type == "refresh_token" then
     params.refresh_token = body_params.refresh_token 
@@ -81,11 +86,11 @@ function parse_token(body)
 end
 
 -- Stores the token in 3scale. You can change the default ttl value of 604800 seconds (7 days) to your desired ttl.
-function store_token(client_id, token)
+function store_token(params, token)
   local stored = ngx.location.capture("/_threescale/oauth_store_token", 
     {method = ngx.HTTP_POST,
     body = "provider_key=" ..ngx.var.provider_key ..
-    "&app_id=".. client_id ..
+    "&app_id=".. params.client_id ..
     "&token=".. token.access_token..
     "&ttl="..(token.expires_in or "604800")})
   return stored

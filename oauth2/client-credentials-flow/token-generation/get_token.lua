@@ -8,14 +8,17 @@ function extract_params()
   local params = {}
   local header_params = ngx.req.get_headers()
 
+  params.authorization = {}
+
   if header_params['Authorization'] then
-    params.authorization = ngx.decode_base64(header_params['Authorization']:split(" ")[2])
-    params.client_id = params.authorization:split(":")[1]
-    params.client_secret = params.authorization:split(":")[2]
+    params.authorization = ngx.decode_base64(header_params['Authorization']:split(" ")[2]):split(":")
   end
 
   ngx.req.read_body()
   local body_params = ngx.req.get_post_args()
+  
+  params.client_id = params.authorization[1] or body_params.client_id
+  params.client_secret = params.authorization[2] or body_params.client_secret
   
   params.grant_type = body_params.grant_type  
 

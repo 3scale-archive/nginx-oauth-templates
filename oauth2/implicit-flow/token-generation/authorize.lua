@@ -11,7 +11,7 @@ function extract_params()
   
   params.response_type = uri_params.response_type 
   params.client_id = uri_params.client_id 
-  params.redirect_uri = uri_params.redirect_uri 
+  params.redirect_uri = uri_params.redirect_uri or uri_params.redirect_url
   params.scope =  uri_params.scope 
   params.state = uri_params.state 
   

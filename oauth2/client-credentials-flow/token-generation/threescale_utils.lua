@@ -116,7 +116,7 @@ function M.build_query(query)
   local qstr = ""
 
   for i,v in pairs(query) do
-    qstr = qstr .. i .. '=' .. v .. '&'
+    qstr = qstr .. ngx.escape_uri(i) .. '=' .. ngx.escape_uri(v) .. '&'
   end
   return string.sub(qstr, 0, #qstr-1)
 end

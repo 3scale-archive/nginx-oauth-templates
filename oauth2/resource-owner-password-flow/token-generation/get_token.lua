@@ -8,17 +8,20 @@ function extract_params()
   local params = {}
   local header_params = ngx.req.get_headers()
 
+  params.authorization = {}
+
   if header_params['Authorization'] then
-    params.authorization = ngx.decode_base64(header_params['Authorization']:split(" ")[2])
-    params.client_id = params.authorization:split(":")[1]
-    params.client_secret = params.authorization:split(":")[2]
+    params.authorization = ngx.decode_base64(header_params['Authorization']:split(" ")[2]):split(":")
   end
 
   ngx.req.read_body()
   local body_params = ngx.req.get_post_args()
   
+  params.client_id = params.authorization[1] or body_params.client_id
+  params.client_secret = params.authorization[2] or body_params.client_secret
+  
   params.grant_type = body_params.grant_type
-  params.username = body_params.username 
+  params.user_id = body_params.user_id or body_params.username 
   params.password = body_params.password 
 
   if params.grant_type == "refresh_token" then
@@ -39,7 +42,7 @@ end
 -- Check user credentials against IDP
 function check_user_credentials(params)
   local body = "CHANGE_ME_REQUEST_PARAMS"
-  -- e.g local body = '{"type": "basic", "value": "'..ngx.encode_base64(params.username..':'..params.password)..'" }'
+  -- e.g local body = '{"type": "basic", "value": "'..ngx.encode_base64(params.user_id..':'..params.password)..'" }'
   local res = ngx.location.capture("/_idp/check_credentials", { method = ngx.HTTP_POST,  body = body})
 
   if res.status ~= 200 then
@@ -69,7 +72,7 @@ end
 
 -- Get the token from the Gateway
 function get_token(params)
-  local required_params = {'username', 'password', 'grant_type'}
+  local required_params = {'user_id', 'password', 'grant_type'}
   
   local res = {}
   local token = {}
@@ -99,13 +102,8 @@ end
 
 -- Stores the token in 3scale. You can change the default ttl value of 604800 seconds (7 days) to your desired ttl.
 function store_token(params, token)
-  local stored = ngx.location.capture("/_threescale/oauth_store_token", 
-    {method = ngx.HTTP_POST,
-    body = "provider_key=" ..ngx.var.provider_key ..
-    "&app_id=".. params.client_id ..
-    "&token=".. token.access_token ..
-    "&user_id=".. params.username .. 
-    "&ttl=".. token.expires_in })
+  local body = ts.build_query({ app_id = params.client_id, token = token.access_token, user_id = params.user_id , ttl = token.expires_in })
+  local stored = ngx.location.capture( "/_threescale/oauth_store_token", { method = ngx.HTTP_POST, body = body } )
   return { ["status"] = stored.status , ["body"] = stored.body }
 end
 

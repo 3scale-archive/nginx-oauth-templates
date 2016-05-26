@@ -16,10 +16,10 @@ function extract_params()
   local params = {}
   local uri_params = ngx.req.get_uri_args()
 
-  params.username = uri_params.username 
+  params.user_id = uri_params.user_id or uri_params.username 
   params.state = uri_params.state  
   -- In case state is no longer valid, authorization server might send this so we know where to redirect with error
-  params.redirect_uri = uri_params.redirect_uri  
+  params.redirect_uri = uri_params.redirect_uri or uri_params.redirect_url
   
   return params
 end
@@ -90,7 +90,7 @@ end
 
 -- Stores the token in 3scale. You can change the default ttl value of 604800 seconds (7 days) to your desired ttl.
 function store_token(params, token)
-  local body = ts.build_query({ app_id = token.client_id, token = token.access_token, user_id = params.username , ttl = token.expires_in })
+  local body = ts.build_query({ app_id = token.client_id, token = token.access_token, user_id = params.user_id , ttl = token.expires_in })
   local stored = ngx.location.capture( "/_threescale/oauth_store_token", 
     { method = ngx.HTTP_POST, body = body } )
   return { ["status"] = stored.status , ["body"] = stored.body }

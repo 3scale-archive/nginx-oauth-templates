@@ -7,17 +7,20 @@ function extract_params()
   local params = {}
   local header_params = ngx.req.get_headers()
 
-  if header_params['Authorization'] then
-    params.authorization = ngx.decode_base64(header_params['Authorization']:split(" ")[2])
-    params.client_id = params.authorization:split(":")[1]
-    params.client_secret = params.authorization:split(":")[2]
-  end
+  params.authorization = {}
 
+  if header_params['Authorization'] then
+    params.authorization = ngx.decode_base64(header_params['Authorization']:split(" ")[2]):split(":")
+  end
+  
   ngx.req.read_body()
   local body_params = ngx.req.get_post_args()
   
+  params.client_id = params.authorization[1] or body_params.client_id
+  params.client_secret = params.authorization[2] or body_params.client_secret
+  
   params.grant_type = body_params.grant_type 
-  params.username = body_params.username 
+  params.user_id = body_params.user_id or body_params.username 
   params.password = body_params.password 
 
   if params.grant_type == "refresh_token" then
@@ -50,7 +53,7 @@ end
 
 -- Get the token from the OAuth Server
 function get_token(params)
-  local access_token_required_params = {'username', 'password', 'grant_type'}
+  local access_token_required_params = {'user_id', 'password', 'grant_type'}
   local refresh_token_required_params =  {'client_id', 'client_secret', 'grant_type', 'refresh_token'}
   
   local res = {}
@@ -100,7 +103,7 @@ function store_token(params, token)
     body = "provider_key=" ..ngx.var.provider_key ..
     "&app_id=".. params.client_id ..
     "&token=".. token.access_token ..
-    "&user_id=".. params.username ..
+    "&user_id=".. params.user_id ..
     "&ttl="..(token.expires_in or "604800")})
   return { ["status"] = stored.status , ["body"] = stored.body }
 end

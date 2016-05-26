@@ -38,7 +38,7 @@ if ts.required_params_present({'state', 'response_type'}, params) then
 						       redirect_uri = client_data.redirect_uri,
 						       access_token = client_data.access_token,
 						       code = code,
-                               user_id = params.username })
+                               user_id = params.user_id })
 
      ok, err =  red:expire("c:".. client_data.client_id, 60 * 10) -- code expires in 10 mins
 

@@ -18,7 +18,7 @@ end
 -- Returns the access token (stored in redis) for the client identified by the id
 -- This needs to be called within a minute of it being stored, as it expires and is deleted
 function generate_access_token_for(params)
-  local ok, err = red:connect("127.0.0.1", 6379)
+  local ok, err = ts.connect_redis(red)
   ok, err =  red:hgetall("c:".. params.client_id)
   
   if ok[1] == nil then

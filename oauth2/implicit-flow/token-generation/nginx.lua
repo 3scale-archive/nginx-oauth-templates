@@ -3,7 +3,7 @@
 -- Error Messages per service
 local _M = {}
 
-service_CHANGE_ME_SERVICE_ID = {
+service_2555417734458 = {
 error_auth_failed = 'Authentication failed',
 error_auth_missing = 'Authentication parameters missing',
 auth_failed_headers = 'text/plain; charset=us-ascii',
@@ -164,7 +164,7 @@ end
 
 matched_rules2 = ""
 
-  function extract_usage_CHANGE_ME_SERVICE_ID(request)
+  function extract_usage_2555417734458(request)
   local t = string.split(request," ")
   local method = t[1]
   local q = string.split(t[2], "?")
@@ -234,7 +234,7 @@ end
 
 function get_debug_value()
   local h = ngx.req.get_headers()
-  if h["X-3scale-debug"] == 'CHANGE_ME_PROVIDER_KEY' then
+  if h["X-3scale-debug"] == '74a605850903230a4d082b662e3b8413' then
     return true
   else
     return false
@@ -329,27 +329,27 @@ local service = {}
     ngx.exit(403)
   end
 
-if ngx.var.service_id == 'CHANGE_ME_SERVICE_ID' then
-  local parameters = get_auth_params("CHANGE_ME_AUTH_PARAMS_LOCATION", string.split(ngx.var.request, " ")[1] )
-  service = service_CHANGE_ME_SERVICE_ID --
+if ngx.var.service_id == '2555417734458' then
+  local parameters = get_auth_params("query param", string.split(ngx.var.request, " ")[1] )
+ -- ngx.log(0, parameters.tostring)  
+  service = service_2555417734458 --
   ngx.var.secret_token = service.secret_token
 
   -- If relevant, extract user_id from request
-  -- e.g local user_id =  ngx.re.match(ngx.var.uri,[=[^/api/user/([\w_\.-]+)\.json]=])
-  -- params.user_id = user_id
-
+--local user_id =  ngx.re.match(ngx.var.uri,[=[^/api/user/([\w_\.-]+)\.json]=])
+--parameters.user_id = user_id
   -- Do this to extract token from Authorization: Bearer <access_token> header
   -- params.access_token = string.split(parameters["authorization"], " ")[2]
   -- ngx.var.access_token = params.access_token
 
   ngx.var.access_token = parameters.access_token
   params.access_token = parameters.access_token
-  get_credentials_access_token(params , service_CHANGE_ME_SERVICE_ID)
-  ngx.var.cached_key = "CHANGE_ME_SERVICE_ID" .. ":" .. params.access_token .. ( params.user_id and  ":" .. params.user_id or "" )
+  get_credentials_access_token(params , service_2555417734458)
+  ngx.var.cached_key = "2555417734458" .. ":" .. params.access_token .. ( params.user_id and  ":" .. params.user_id or "" )
   auth_strat = "oauth"
-  ngx.var.service_id = "CHANGE_ME_SERVICE_ID"
-  ngx.var.proxy_pass = "https://backend_CHANGE_ME_API_BACKEND"
-  ngx.var.usage = extract_usage_CHANGE_ME_SERVICE_ID(ngx.var.request)
+  ngx.var.service_id = "2555417734458"
+  ngx.var.proxy_pass = "http://backend_user_goals_api"
+  ngx.var.usage = extract_usage_2555417734458(ngx.var.request)
 end
 
 ngx.var.credentials = build_query(params)

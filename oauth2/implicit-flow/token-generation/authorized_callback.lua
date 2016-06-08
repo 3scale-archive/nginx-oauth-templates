@@ -7,6 +7,7 @@
 local ts = require 'threescale_utils'
 local redis = require 'resty.redis'
 local red = redis:new()
+local inspect = require 'inspect'
 
 -- The authorization server should send some data in the callback response to let the
 -- API Gateway know which user to associate with the token. 
@@ -14,8 +15,8 @@ local red = redis:new()
 -- This function should be over-ridden depending on authorization server implementation.
 function extract_params()
   local params = {}
+-- If the user_id is sent elsewhere (for example in the headers) then change the following logic accordingly  
   local uri_params = ngx.req.get_uri_args()
-
   params.user_id = uri_params.user_id or uri_params.username 
   params.state = uri_params.state  
   -- In case state is no longer valid, authorization server might send this so we know where to redirect with error
@@ -54,7 +55,9 @@ function get_token(params)
   
   token = request_token(params)
   res = store_token(params, token)
- 
+ ngx.log(0, inspect(token))
+ ngx.log(0, "i am checking: "..inspect(params))
+ ngx.log(0, inspect(res))
   if res.status ~= 200 then
     local error_code = res.body:match('<error code="(.*)">') 
     ngx.header.content_type = "application/x-www-form-urlencoded"

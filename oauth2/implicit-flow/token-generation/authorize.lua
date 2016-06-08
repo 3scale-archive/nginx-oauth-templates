@@ -2,6 +2,7 @@ local random = require 'resty.random'
 local ts = require 'threescale_utils'
 local redis = require 'resty.redis'
 local red = redis:new()
+local inspect = require 'inspect'
 
 -- As per RFC for Implicit flow: extract params from request uri
 -- If implementation deviates from RFC, this function should be over-ridden
@@ -13,7 +14,6 @@ function extract_params()
   params.client_id = uri_params.client_id 
   params.redirect_uri = uri_params.redirect_uri or uri_params.redirect_url
   params.scope =  uri_params.scope 
-  params.state = uri_params.state 
   
   return params
 end
@@ -28,7 +28,6 @@ end
 function check_client_credentials(params)
   local res = ngx.location.capture("/_threescale/check_credentials",
               { args = { app_id = params.client_id , app_key = params.client_secret , redirect_uri = params.redirect_uri  }})
-  
   if res.status ~= 200 then   
     params.error = "invalid_client"
     redirect_to_auth(params)
@@ -72,6 +71,7 @@ function redirect_to_auth(params)
     if not ok then
       ts.error(ts.dump(err))
     end
+    ngx.log(0, "sent params: "..inspect(params))
   end
 
   local args = ts.build_query(params)

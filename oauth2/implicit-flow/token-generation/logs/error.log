@@ -1,0 +1,830 @@
+2016/05/27 15:35:31 [alert] 26123#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/27 15:35:31 [emerg] 26123#0: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2016/05/27 15:35:31 [emerg] 26123#0: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2016/05/27 15:35:31 [emerg] 26123#0: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2016/05/27 15:35:31 [emerg] 26123#0: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2016/05/27 15:35:31 [emerg] 26123#0: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2016/05/27 15:35:31 [emerg] 26123#0: still could not bind()
+2016/05/27 15:35:44 [alert] 26331#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/27 15:37:56 [error] 26335#0: *7 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/27 15:37:56 [error] 26335#0: *7 connect() failed (111: Connection refused), client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/27 15:37:57 [error] 26335#0: *7 lua entry thread aborted: runtime error: ./nginx.lua:59: bad argument #3 to '__newindex' (number expected, got nil)
+stack traceback:
+coroutine 0:
+	[C]: in function '__newindex'
+	./nginx.lua:59: in function 'error_authorization_failed'
+	./nginx.lua:302: in function 'authrep'
+	./nginx.lua:248: in function 'authorize'
+	./nginx.lua:376: in function 'access'
+	access_by_lua(nginx.conf:155):1: in function <access_by_lua(nginx.conf:155):1> while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /favicon.ico HTTP/1.1", host: "b3c85e44.ngrok.io"
+2016/05/27 15:37:58 [error] 26335#0: *10 lua entry thread aborted: runtime error: ./nginx.lua:59: bad argument #3 to '__newindex' (number expected, got nil)
+stack traceback:
+coroutine 0:
+	[C]: in function '__newindex'
+	./nginx.lua:59: in function 'error_authorization_failed'
+	./nginx.lua:302: in function 'authrep'
+	./nginx.lua:248: in function 'authorize'
+	./nginx.lua:376: in function 'access'
+	access_by_lua(nginx.conf:155):1: in function <access_by_lua(nginx.conf:155):1> while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /favicon.ico HTTP/1.1", host: "b3c85e44.ngrok.io"
+2016/05/27 15:44:35 [error] 26335#0: *12 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&error=invalid_client&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/27 15:44:35 [error] 26335#0: *12 connect() failed (111: Connection refused), client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&error=invalid_client&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/27 15:50:57 [error] 26335#0: *15 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/27 15:50:57 [error] 26335#0: *15 lua entry thread aborted: runtime error: ...2/implicit-flow/token-generation/authorized_callback.lua:61: attempt to concatenate field 'redirect_uri' (a nil value)
+stack traceback:
+coroutine 0:
+	...2/implicit-flow/token-generation/authorized_callback.lua: in function 'get_token'
+	...2/implicit-flow/token-generation/authorized_callback.lua:110: in function <...2/implicit-flow/token-generation/authorized_callback.lua:1> while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/27 15:57:31 [error] 26335#0: *19 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&error=invalid_client&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/27 15:57:32 [] 26335#0: *19 [lua] authorized_callback.lua:58: get_token(): {
+  expires_in = 604800,
+  state = ""
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&error=invalid_client&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/27 15:57:32 [] 26335#0: *19 [lua] authorized_callback.lua:59: get_token(): {
+  state = "",
+  user_id = "1"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&error=invalid_client&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/27 15:57:32 [] 26335#0: *19 [lua] authorized_callback.lua:60: get_token(): {
+  body = '<?xml version="1.0" encoding="UTF-8"?><error code="required_params_missing">missing required parameters</error>',
+  status = 422
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&error=invalid_client&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/27 15:57:32 [error] 26335#0: *19 lua entry thread aborted: runtime error: ...2/implicit-flow/token-generation/authorized_callback.lua:64: attempt to concatenate field 'redirect_uri' (a nil value)
+stack traceback:
+coroutine 0:
+	...2/implicit-flow/token-generation/authorized_callback.lua: in function 'get_token'
+	...2/implicit-flow/token-generation/authorized_callback.lua:113: in function <...2/implicit-flow/token-generation/authorized_callback.lua:1> while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&error=invalid_client&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/27 16:11:41 [error] 26335#0: *23 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/27 16:11:42 [] 26335#0: *23 [lua] authorized_callback.lua:58: get_token(): {
+  expires_in = 604800,
+  state = ""
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/27 16:11:42 [] 26335#0: *23 [lua] authorized_callback.lua:59: get_token(): {
+  state = "",
+  user_id = "1"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/27 16:11:42 [] 26335#0: *23 [lua] authorized_callback.lua:60: get_token(): {
+  body = '<?xml version="1.0" encoding="UTF-8"?><error code="required_params_missing">missing required parameters</error>',
+  status = 422
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/27 16:11:42 [error] 26335#0: *23 lua entry thread aborted: runtime error: ...2/implicit-flow/token-generation/authorized_callback.lua:64: attempt to concatenate field 'redirect_uri' (a nil value)
+stack traceback:
+coroutine 0:
+	...2/implicit-flow/token-generation/authorized_callback.lua: in function 'get_token'
+	...2/implicit-flow/token-generation/authorized_callback.lua:113: in function <...2/implicit-flow/token-generation/authorized_callback.lua:1> while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/27 16:12:38 [error] 26335#0: *27 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&error=invalid_client&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/27 16:12:39 [] 26335#0: *27 [lua] authorized_callback.lua:58: get_token(): {
+  expires_in = 604800,
+  state = ""
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&error=invalid_client&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/27 16:12:39 [] 26335#0: *27 [lua] authorized_callback.lua:59: get_token(): {
+  state = "",
+  user_id = "1"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&error=invalid_client&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/27 16:12:39 [] 26335#0: *27 [lua] authorized_callback.lua:60: get_token(): {
+  body = '<?xml version="1.0" encoding="UTF-8"?><error code="required_params_missing">missing required parameters</error>',
+  status = 422
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&error=invalid_client&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/27 16:12:39 [error] 26335#0: *27 lua entry thread aborted: runtime error: ...2/implicit-flow/token-generation/authorized_callback.lua:64: attempt to concatenate field 'redirect_uri' (a nil value)
+stack traceback:
+coroutine 0:
+	...2/implicit-flow/token-generation/authorized_callback.lua: in function 'get_token'
+	...2/implicit-flow/token-generation/authorized_callback.lua:113: in function <...2/implicit-flow/token-generation/authorized_callback.lua:1> while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&error=invalid_client&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/27 16:14:07 [error] 26335#0: *31 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/27 16:14:08 [] 26335#0: *31 [lua] authorized_callback.lua:58: get_token(): {
+  expires_in = 604800,
+  state = ""
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/27 16:14:08 [] 26335#0: *31 [lua] authorized_callback.lua:59: get_token(): {
+  state = "",
+  user_id = "1"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/27 16:14:08 [] 26335#0: *31 [lua] authorized_callback.lua:60: get_token(): {
+  body = '<?xml version="1.0" encoding="UTF-8"?><error code="required_params_missing">missing required parameters</error>',
+  status = 422
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/27 16:14:08 [error] 26335#0: *31 lua entry thread aborted: runtime error: ...2/implicit-flow/token-generation/authorized_callback.lua:64: attempt to concatenate field 'redirect_uri' (a nil value)
+stack traceback:
+coroutine 0:
+	...2/implicit-flow/token-generation/authorized_callback.lua: in function 'get_token'
+	...2/implicit-flow/token-generation/authorized_callback.lua:113: in function <...2/implicit-flow/token-generation/authorized_callback.lua:1> while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/27 16:15:14 [] 26335#0: *35 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "bbe2b9762fc656327e393efe114cd1b26a537dfd",
+  tok = "7ff621dd9df7e4f9f347688aeac2ea2ac8cbd506"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/27 16:15:23 [error] 26335#0: *35 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=bbe2b9762fc656327e393efe114cd1b26a537dfd&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=bbe2b9762fc656327e393efe114cd1b26a537dfd&tok=7ff621dd9df7e4f9f347688aeac2ea2ac8cbd506&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/27 16:15:24 [] 26335#0: *35 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "7ff621dd9df7e4f9f347688aeac2ea2ac8cbd506",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "bbe2b9762fc656327e393efe114cd1b26a537dfd"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=bbe2b9762fc656327e393efe114cd1b26a537dfd&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=bbe2b9762fc656327e393efe114cd1b26a537dfd&tok=7ff621dd9df7e4f9f347688aeac2ea2ac8cbd506&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/27 16:15:24 [] 26335#0: *35 [lua] authorized_callback.lua:59: get_token(): {
+  state = "bbe2b9762fc656327e393efe114cd1b26a537dfd",
+  user_id = "1"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=bbe2b9762fc656327e393efe114cd1b26a537dfd&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=bbe2b9762fc656327e393efe114cd1b26a537dfd&tok=7ff621dd9df7e4f9f347688aeac2ea2ac8cbd506&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/27 16:15:24 [] 26335#0: *35 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=bbe2b9762fc656327e393efe114cd1b26a537dfd&username=1 HTTP/1.1", host: "b3c85e44.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=bbe2b9762fc656327e393efe114cd1b26a537dfd&tok=7ff621dd9df7e4f9f347688aeac2ea2ac8cbd506&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/30 11:23:05 [alert] 11539#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 11:24:13 [error] 11563#0: *1 connect() failed (111: Connection refused) while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 11:25:49 [error] 11562#0: *5 connect() failed (111: Connection refused) while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 11:26:00 [error] 11562#0: *5 connect() failed (111: Connection refused) while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 11:33:27 [error] 11562#0: *11 connect() failed (111: Connection refused) while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 11:34:35 [alert] 22163#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 11:34:35 [notice] 22163#0: signal process started
+2016/05/30 11:34:35 [alert] 11559#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 11:35:21 [error] 22170#0: *15 connect() failed (111: Connection refused) while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 11:41:50 [] 22170#0: *19 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "76205e41003507faa0c843a75ea494d2236bbd16",
+  tok = "692cce7b6275cb1ef75d46f4eb0704ec852b190f"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 11:42:08 [error] 22170#0: *19 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=76205e41003507faa0c843a75ea494d2236bbd16&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 11:42:09 [] 22170#0: *19 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "692cce7b6275cb1ef75d46f4eb0704ec852b190f",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "76205e41003507faa0c843a75ea494d2236bbd16"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=76205e41003507faa0c843a75ea494d2236bbd16&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 11:42:09 [] 22170#0: *19 [lua] authorized_callback.lua:59: get_token(): {
+  state = "76205e41003507faa0c843a75ea494d2236bbd16",
+  user_id = "1"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=76205e41003507faa0c843a75ea494d2236bbd16&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 11:42:09 [] 22170#0: *19 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=76205e41003507faa0c843a75ea494d2236bbd16&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 12:56:20 [] 22170#0: *25 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "a55c727bd65a135ba1dfe20ba97c788bcf49cb8f",
+  tok = "e2ea4071543b39f03e8bba5371fb019c78121bd7"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 12:57:46 [] 22170#0: *28 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "f8dceaff8ed6c7c2a698f84f5579dd5ece7cacf9",
+  tok = "846572d80cbdb7af9cd7a0e10fe75f0a5f3feb77"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 12:57:51 [error] 22170#0: *28 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=f8dceaff8ed6c7c2a698f84f5579dd5ece7cacf9&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 12:57:51 [] 22170#0: *28 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "846572d80cbdb7af9cd7a0e10fe75f0a5f3feb77",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "f8dceaff8ed6c7c2a698f84f5579dd5ece7cacf9"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=f8dceaff8ed6c7c2a698f84f5579dd5ece7cacf9&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 12:57:51 [] 22170#0: *28 [lua] authorized_callback.lua:59: get_token(): {
+  state = "f8dceaff8ed6c7c2a698f84f5579dd5ece7cacf9",
+  user_id = "1"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=f8dceaff8ed6c7c2a698f84f5579dd5ece7cacf9&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 12:57:51 [] 22170#0: *28 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=f8dceaff8ed6c7c2a698f84f5579dd5ece7cacf9&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 13:26:39 [] 22170#0: *36 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "34f5006cdaa8d5d86bf41cebf4b07ea3870f94a3",
+  tok = "aa5b5c81f629268bcb86842c31bb73a0b3edba72"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 13:26:50 [error] 22170#0: *36 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=34f5006cdaa8d5d86bf41cebf4b07ea3870f94a3&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 13:26:50 [] 22170#0: *36 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "aa5b5c81f629268bcb86842c31bb73a0b3edba72",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "34f5006cdaa8d5d86bf41cebf4b07ea3870f94a3"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=34f5006cdaa8d5d86bf41cebf4b07ea3870f94a3&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 13:26:50 [] 22170#0: *36 [lua] authorized_callback.lua:59: get_token(): {
+  state = "34f5006cdaa8d5d86bf41cebf4b07ea3870f94a3",
+  user_id = "1"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=34f5006cdaa8d5d86bf41cebf4b07ea3870f94a3&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 13:26:50 [] 22170#0: *36 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=34f5006cdaa8d5d86bf41cebf4b07ea3870f94a3&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 13:27:30 [error] 22170#0: *41 SSL_do_handshake() failed (SSL: error:140770FC:SSL routines:SSL23_GET_SERVER_HELLO:unknown protocol) while SSL handshaking to upstream, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72 HTTP/1.1", upstream: "https://46.137.127.234:80/api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72", host: "a0731acc.ngrok.io"
+2016/05/30 13:27:30 [crit] 22170#0: *41 SSL_shutdown() failed (SSL: error:140E0197:SSL routines:SSL_shutdown:shutdown while in init) while SSL handshaking to upstream, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72 HTTP/1.1", upstream: "https://46.137.127.234:80/api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72", host: "a0731acc.ngrok.io"
+2016/05/30 13:28:26 [error] 22170#0: *44 SSL_do_handshake() failed (SSL: error:140770FC:SSL routines:SSL23_GET_SERVER_HELLO:unknown protocol) while SSL handshaking to upstream, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72 HTTP/1.1", upstream: "https://46.137.127.234:80/api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72", host: "a0731acc.ngrok.io"
+2016/05/30 13:28:26 [crit] 22170#0: *44 SSL_shutdown() failed (SSL: error:140E0197:SSL routines:SSL_shutdown:shutdown while in init) while SSL handshaking to upstream, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72 HTTP/1.1", upstream: "https://46.137.127.234:80/api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72", host: "a0731acc.ngrok.io"
+2016/05/30 13:31:28 [error] 22170#0: *47 SSL_do_handshake() failed (SSL: error:140770FC:SSL routines:SSL23_GET_SERVER_HELLO:unknown protocol) while SSL handshaking to upstream, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72 HTTP/1.1", upstream: "https://46.137.127.234:80/api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72", host: "a0731acc.ngrok.io"
+2016/05/30 13:31:28 [crit] 22170#0: *47 SSL_shutdown() failed (SSL: error:140E0197:SSL routines:SSL_shutdown:shutdown while in init) while SSL handshaking to upstream, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72 HTTP/1.1", upstream: "https://46.137.127.234:80/api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72", host: "a0731acc.ngrok.io"
+2016/05/30 13:42:57 [error] 22170#0: *50 SSL_do_handshake() failed (SSL: error:140770FC:SSL routines:SSL23_GET_SERVER_HELLO:unknown protocol) while SSL handshaking to upstream, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72 HTTP/1.1", upstream: "https://46.137.127.234:80/api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72", host: "a0731acc.ngrok.io"
+2016/05/30 13:42:57 [crit] 22170#0: *50 SSL_shutdown() failed (SSL: error:140E0197:SSL routines:SSL_shutdown:shutdown while in init) while SSL handshaking to upstream, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72 HTTP/1.1", upstream: "https://46.137.127.234:80/api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72", host: "a0731acc.ngrok.io"
+2016/05/30 13:48:04 [alert] 16500#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 13:48:04 [emerg] 16500#0: the duplicate "host" variable in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:148
+2016/05/30 13:48:47 [alert] 17160#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 13:48:47 [notice] 17160#0: signal process started
+2016/05/30 13:48:47 [alert] 11559#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 13:49:19 [error] 17164#0: *53 SSL_do_handshake() failed (SSL: error:140770FC:SSL routines:SSL23_GET_SERVER_HELLO:unknown protocol) while SSL handshaking to upstream, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72 HTTP/1.1", upstream: "https://176.34.255.126:80/api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72", host: "a0731acc.ngrok.io"
+2016/05/30 13:49:19 [crit] 17164#0: *53 SSL_shutdown() failed (SSL: error:140E0197:SSL routines:SSL_shutdown:shutdown while in init) while SSL handshaking to upstream, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72 HTTP/1.1", upstream: "https://176.34.255.126:80/api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72", host: "a0731acc.ngrok.io"
+2016/05/30 13:49:52 [error] 17164#0: *57 SSL_do_handshake() failed (SSL: error:140770FC:SSL routines:SSL23_GET_SERVER_HELLO:unknown protocol) while SSL handshaking to upstream, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72 HTTP/1.1", upstream: "https://176.34.255.126:80/api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72", host: "a0731acc.ngrok.io"
+2016/05/30 13:49:52 [crit] 17164#0: *57 SSL_shutdown() failed (SSL: error:140E0197:SSL routines:SSL_shutdown:shutdown while in init) while SSL handshaking to upstream, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72 HTTP/1.1", upstream: "https://176.34.255.126:80/api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72", host: "a0731acc.ngrok.io"
+2016/05/30 13:51:54 [error] 17164#0: *61 SSL_do_handshake() failed (SSL: error:140770FC:SSL routines:SSL23_GET_SERVER_HELLO:unknown protocol) while SSL handshaking to upstream, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72 HTTP/1.1", upstream: "https://176.34.255.126:80/api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72", host: "a0731acc.ngrok.io"
+2016/05/30 13:51:54 [crit] 17164#0: *61 SSL_shutdown() failed (SSL: error:140E0197:SSL routines:SSL_shutdown:shutdown while in init) while SSL handshaking to upstream, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72 HTTP/1.1", upstream: "https://176.34.255.126:80/api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72", host: "a0731acc.ngrok.io"
+2016/05/30 13:53:38 [error] 17164#0: *64 SSL_do_handshake() failed (SSL: error:140770FC:SSL routines:SSL23_GET_SERVER_HELLO:unknown protocol) while SSL handshaking to upstream, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72 HTTP/1.1", upstream: "https://176.34.255.126:80/api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72", host: "a0731acc.ngrok.io"
+2016/05/30 13:53:38 [crit] 17164#0: *64 SSL_shutdown() failed (SSL: error:140E0197:SSL routines:SSL_shutdown:shutdown while in init) while SSL handshaking to upstream, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72 HTTP/1.1", upstream: "https://176.34.255.126:80/api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72", host: "a0731acc.ngrok.io"
+2016/05/30 13:54:08 [alert] 22105#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 13:54:08 [notice] 22105#0: signal process started
+2016/05/30 13:54:08 [alert] 11559#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 13:54:55 [alert] 22830#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 13:54:55 [notice] 22830#0: signal process started
+2016/05/30 13:54:55 [alert] 11559#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 13:55:02 [error] 22831#0: *67 SSL_do_handshake() failed (SSL: error:140770FC:SSL routines:SSL23_GET_SERVER_HELLO:unknown protocol) while SSL handshaking to upstream, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72 HTTP/1.1", upstream: "https://176.34.126.212:80/api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72", host: "a0731acc.ngrok.io"
+2016/05/30 13:55:02 [crit] 22831#0: *67 SSL_shutdown() failed (SSL: error:140E0197:SSL routines:SSL_shutdown:shutdown while in init) while SSL handshaking to upstream, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72 HTTP/1.1", upstream: "https://176.34.126.212:80/api/meals.json?access_token=aa5b5c81f629268bcb86842c31bb73a0b3edba72", host: "a0731acc.ngrok.io"
+2016/05/30 13:58:51 [alert] 26447#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 13:58:51 [notice] 26447#0: signal process started
+2016/05/30 13:58:51 [alert] 11559#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 14:05:20 [alert] 32361#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 14:05:20 [notice] 32361#0: signal process started
+2016/05/30 14:05:20 [alert] 11559#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 14:21:45 [alert] 15360#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 14:21:45 [notice] 15360#0: signal process started
+2016/05/30 14:21:45 [alert] 11559#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 17:47:36 [alert] 11829#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 17:47:36 [notice] 11829#0: signal process started
+2016/05/30 17:47:36 [alert] 11559#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 17:48:10 [] 11852#0: *106 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "d5f32dc0ae53a61dd70488f2ebd1fe421d632315",
+  tok = "8819f1be55e4e93fd4c56d97dd19e9c7ed22c487"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 17:48:54 [] 11852#0: *106 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "09bb2f3433f301fa8091dbb6c1df6432b099d2df",
+  tok = "286362c291c2dc9d4b9cc566bd8d1a7824008411"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 17:48:57 [error] 11852#0: *106 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=09bb2f3433f301fa8091dbb6c1df6432b099d2df&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=09bb2f3433f301fa8091dbb6c1df6432b099d2df&tok=286362c291c2dc9d4b9cc566bd8d1a7824008411&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/30 17:48:58 [] 11852#0: *106 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "286362c291c2dc9d4b9cc566bd8d1a7824008411",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "09bb2f3433f301fa8091dbb6c1df6432b099d2df"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=09bb2f3433f301fa8091dbb6c1df6432b099d2df&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=09bb2f3433f301fa8091dbb6c1df6432b099d2df&tok=286362c291c2dc9d4b9cc566bd8d1a7824008411&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/30 17:48:58 [] 11852#0: *106 [lua] authorized_callback.lua:59: get_token(): {
+  state = "09bb2f3433f301fa8091dbb6c1df6432b099d2df",
+  user_id = "1"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=09bb2f3433f301fa8091dbb6c1df6432b099d2df&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=09bb2f3433f301fa8091dbb6c1df6432b099d2df&tok=286362c291c2dc9d4b9cc566bd8d1a7824008411&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/30 17:48:58 [] 11852#0: *106 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=09bb2f3433f301fa8091dbb6c1df6432b099d2df&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=09bb2f3433f301fa8091dbb6c1df6432b099d2df&tok=286362c291c2dc9d4b9cc566bd8d1a7824008411&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/30 20:11:19 [] 11851#0: *125 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "6d752245b7f998dccc47140e827b6816fc02da5c",
+  tok = "3f4d82d70b83d1236f0bd6b24bd29ab3ae2c9627"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 20:13:11 [] 11851#0: *129 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "3b0f01e689e449e5c2552de4fe2a717025446b2e",
+  tok = "0d7d6ef5ca7e9e863bab355a0f3ea46bb083b6b1"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 20:13:16 [error] 11851#0: *129 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=3b0f01e689e449e5c2552de4fe2a717025446b2e&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=3b0f01e689e449e5c2552de4fe2a717025446b2e&tok=0d7d6ef5ca7e9e863bab355a0f3ea46bb083b6b1&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/30 20:13:16 [] 11851#0: *129 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "0d7d6ef5ca7e9e863bab355a0f3ea46bb083b6b1",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "3b0f01e689e449e5c2552de4fe2a717025446b2e"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=3b0f01e689e449e5c2552de4fe2a717025446b2e&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=3b0f01e689e449e5c2552de4fe2a717025446b2e&tok=0d7d6ef5ca7e9e863bab355a0f3ea46bb083b6b1&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/30 20:13:16 [] 11851#0: *129 [lua] authorized_callback.lua:59: get_token(): {
+  state = "3b0f01e689e449e5c2552de4fe2a717025446b2e",
+  user_id = "1"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=3b0f01e689e449e5c2552de4fe2a717025446b2e&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=3b0f01e689e449e5c2552de4fe2a717025446b2e&tok=0d7d6ef5ca7e9e863bab355a0f3ea46bb083b6b1&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/30 20:13:16 [] 11851#0: *129 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=3b0f01e689e449e5c2552de4fe2a717025446b2e&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=3b0f01e689e449e5c2552de4fe2a717025446b2e&tok=0d7d6ef5ca7e9e863bab355a0f3ea46bb083b6b1&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/30 20:14:08 [] 11851#0: *129 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "853f819d9c0eb2e27cd4bd0a0b5c1d7e127574c1",
+  tok = "f8a603caa3a4f3ce95584a35013b19fbdcca1bb8"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 20:21:02 [] 11851#0: *139 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "b56c283705f1cb4ee3fe23f8dcf823ea3ebf1e2c",
+  tok = "43612be96b04968f074e2afb9de61a80c6958199"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 20:22:59 [] 11851#0: *142 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "f13b8a0250c338227028d0830a417879dc49364d",
+  tok = "017d274e4343e1485641481bc3bcc50b4c2102b5"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 20:23:02 [error] 11851#0: *142 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=f13b8a0250c338227028d0830a417879dc49364d&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=f13b8a0250c338227028d0830a417879dc49364d&tok=017d274e4343e1485641481bc3bcc50b4c2102b5&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/30 20:23:03 [] 11851#0: *142 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "017d274e4343e1485641481bc3bcc50b4c2102b5",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "f13b8a0250c338227028d0830a417879dc49364d"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=f13b8a0250c338227028d0830a417879dc49364d&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=f13b8a0250c338227028d0830a417879dc49364d&tok=017d274e4343e1485641481bc3bcc50b4c2102b5&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/30 20:23:03 [] 11851#0: *142 [lua] authorized_callback.lua:59: get_token(): {
+  state = "f13b8a0250c338227028d0830a417879dc49364d",
+  user_id = "1"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=f13b8a0250c338227028d0830a417879dc49364d&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=f13b8a0250c338227028d0830a417879dc49364d&tok=017d274e4343e1485641481bc3bcc50b4c2102b5&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/30 20:23:03 [] 11851#0: *142 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=f13b8a0250c338227028d0830a417879dc49364d&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=f13b8a0250c338227028d0830a417879dc49364d&tok=017d274e4343e1485641481bc3bcc50b4c2102b5&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/30 20:23:30 [] 11851#0: *142 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "c1dd8c662b5e32591d44fcd4a60aa7f9c75d502e",
+  tok = "d7af056ffb55236ea4af07387374a867f3910959"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 20:24:11 [] 11851#0: *149 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "7cdd9ef3c400950f154f6d573d407288a8bf6c09",
+  tok = "c74b0d45b96bef1d6d057c6f11a47cd1248c0750"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 20:25:06 [alert] 28537#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 20:25:06 [notice] 28537#0: signal process started
+2016/05/30 20:25:06 [alert] 11559#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/30 20:26:21 [] 28546#0: *152 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "702367cd8ed8c14590bcdb61c86cee3bf0003fac",
+  tok = "94e55f1245c77b900639d22cf53cfe3e1413e815"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 20:27:13 [error] 28546#0: *152 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=702367cd8ed8c14590bcdb61c86cee3bf0003fac&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 20:27:13 [] 28546#0: *152 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "94e55f1245c77b900639d22cf53cfe3e1413e815",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "702367cd8ed8c14590bcdb61c86cee3bf0003fac"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=702367cd8ed8c14590bcdb61c86cee3bf0003fac&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 20:27:13 [] 28546#0: *152 [lua] authorized_callback.lua:59: get_token(): {
+  state = "702367cd8ed8c14590bcdb61c86cee3bf0003fac",
+  user_id = "1"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=702367cd8ed8c14590bcdb61c86cee3bf0003fac&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 20:27:13 [] 28546#0: *152 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=702367cd8ed8c14590bcdb61c86cee3bf0003fac&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 20:27:46 [] 28546#0: *159 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "78884379fa774dc87254e0e3a74b9055bbfe732b",
+  tok = "b2004b6ac7d2363d443d6aa1fd82449de67e845f"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 20:28:01 [error] 28546#0: *159 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=78884379fa774dc87254e0e3a74b9055bbfe732b&username=2 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 20:28:02 [] 28546#0: *159 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "b2004b6ac7d2363d443d6aa1fd82449de67e845f",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "78884379fa774dc87254e0e3a74b9055bbfe732b"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=78884379fa774dc87254e0e3a74b9055bbfe732b&username=2 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 20:28:02 [] 28546#0: *159 [lua] authorized_callback.lua:59: get_token(): {
+  state = "78884379fa774dc87254e0e3a74b9055bbfe732b",
+  user_id = "2"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=78884379fa774dc87254e0e3a74b9055bbfe732b&username=2 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 20:28:02 [] 28546#0: *159 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=78884379fa774dc87254e0e3a74b9055bbfe732b&username=2 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 20:33:59 [] 28546#0: *175 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "10122fe18c66ee0e56300a39052f1bfd4bfc4305",
+  tok = "576eaa9d7b757854a323a44424399ff7145e475c"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 20:34:04 [error] 28546#0: *175 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=10122fe18c66ee0e56300a39052f1bfd4bfc4305&username=2 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=10122fe18c66ee0e56300a39052f1bfd4bfc4305&tok=576eaa9d7b757854a323a44424399ff7145e475c&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/30 20:34:05 [] 28546#0: *175 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "576eaa9d7b757854a323a44424399ff7145e475c",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "10122fe18c66ee0e56300a39052f1bfd4bfc4305"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=10122fe18c66ee0e56300a39052f1bfd4bfc4305&username=2 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=10122fe18c66ee0e56300a39052f1bfd4bfc4305&tok=576eaa9d7b757854a323a44424399ff7145e475c&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/30 20:34:05 [] 28546#0: *175 [lua] authorized_callback.lua:59: get_token(): {
+  state = "10122fe18c66ee0e56300a39052f1bfd4bfc4305",
+  user_id = "2"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=10122fe18c66ee0e56300a39052f1bfd4bfc4305&username=2 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=10122fe18c66ee0e56300a39052f1bfd4bfc4305&tok=576eaa9d7b757854a323a44424399ff7145e475c&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/30 20:34:05 [] 28546#0: *175 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=10122fe18c66ee0e56300a39052f1bfd4bfc4305&username=2 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=10122fe18c66ee0e56300a39052f1bfd4bfc4305&tok=576eaa9d7b757854a323a44424399ff7145e475c&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/30 20:34:23 [] 28546#0: *175 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "1303549b34b4c9534edaae696a55cc2aab7872de",
+  tok = "e5b5419015fda5c970da1af4bff97cae1365687a"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 20:36:00 [] 28545#0: *182 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "59ae481f65c561518c83796cce0cb6f8eab617fe",
+  tok = "56808e5857aa5f4afe813c3f8fd88eca9d2d1467"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 20:37:34 [] 28545#0: *186 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "2384a65c59d3f70bc8b578d47fabdbad295ffa1f",
+  tok = "8dd9a5e76d2e3469d93660c77ea37dd014005f4b"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 20:38:27 [] 28545#0: *190 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "99ba2ad8de1dbec0c5a9ca0e57bdf135d298e2af",
+  tok = "28367b139ee61dead37337bc92197de78dd164d3"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/30 20:38:36 [error] 28545#0: *190 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=99ba2ad8de1dbec0c5a9ca0e57bdf135d298e2af&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 20:38:37 [] 28545#0: *190 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "28367b139ee61dead37337bc92197de78dd164d3",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "99ba2ad8de1dbec0c5a9ca0e57bdf135d298e2af"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=99ba2ad8de1dbec0c5a9ca0e57bdf135d298e2af&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 20:38:37 [] 28545#0: *190 [lua] authorized_callback.lua:59: get_token(): {
+  state = "99ba2ad8de1dbec0c5a9ca0e57bdf135d298e2af",
+  user_id = "1"
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=99ba2ad8de1dbec0c5a9ca0e57bdf135d298e2af&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 20:38:37 [] 28545#0: *190 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /callback?state=99ba2ad8de1dbec0c5a9ca0e57bdf135d298e2af&username=1 HTTP/1.1", host: "a0731acc.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/30 21:06:23 [error] 28546#0: *210 lua entry thread aborted: runtime error: ./nginx.lua:349: attempt to concatenate field 'user_id' (a table value)
+stack traceback:
+coroutine 0:
+	./nginx.lua: in function 'access'
+	access_by_lua(nginx.conf:155):1: in function <access_by_lua(nginx.conf:155):1>, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/user/7.json?access_token=28367b139ee61dead37337bc92197de78dd164d3 HTTP/1.1", host: "a0731acc.ngrok.io"
+2016/05/30 21:08:19 [error] 28546#0: *211 lua entry thread aborted: runtime error: ./nginx.lua:347: attempt to concatenate field 'user_id' (a table value)
+stack traceback:
+coroutine 0:
+	./nginx.lua: in function 'access'
+	access_by_lua(nginx.conf:155):1: in function <access_by_lua(nginx.conf:155):1>, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/user/2.json?access_token=28367b139ee61dead37337bc92197de78dd164d3 HTTP/1.1", host: "a0731acc.ngrok.io"
+2016/05/30 21:12:29 [] 28546#0: *215 [lua] nginx.lua:340: access(): /api/user/2.json, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/user/2.json?access_token=28367b139ee61dead37337bc92197de78dd164d3 HTTP/1.1", host: "a0731acc.ngrok.io"
+2016/05/30 21:12:29 [error] 28546#0: *215 lua entry thread aborted: runtime error: ./nginx.lua:348: attempt to concatenate field 'user_id' (a table value)
+stack traceback:
+coroutine 0:
+	./nginx.lua: in function 'access'
+	access_by_lua(nginx.conf:155):1: in function <access_by_lua(nginx.conf:155):1>, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/user/2.json?access_token=28367b139ee61dead37337bc92197de78dd164d3 HTTP/1.1", host: "a0731acc.ngrok.io"
+2016/05/30 21:12:54 [] 28546#0: *216 [lua] nginx.lua:340: access(): /api/user/2.json, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/user/2.json?access_token=28367b139ee61dead37337bc92197de78dd164d3 HTTP/1.1", host: "a0731acc.ngrok.io"
+2016/05/30 21:13:39 [] 28546#0: *219 [lua] nginx.lua:340: access(): helloo, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/user/2.json?access_token=28367b139ee61dead37337bc92197de78dd164d3 HTTP/1.1", host: "a0731acc.ngrok.io"
+2016/05/30 21:17:13 [error] 28546#0: *225 lua entry thread aborted: runtime error: ./nginx.lua:339: bad argument #1 to 'log' (expected table to have __tostring metamethod)
+stack traceback:
+coroutine 0:
+	[C]: in function 'log'
+	./nginx.lua:339: in function 'access'
+	access_by_lua(nginx.conf:155):1: in function <access_by_lua(nginx.conf:155):1>, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/user/2.json?access_token=28367b139ee61dead37337bc92197de78dd164d3 HTTP/1.1", host: "a0731acc.ngrok.io"
+2016/05/30 21:18:12 [] 28546#0: *226 [lua] nginx.lua:339: access(): nil, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/user/2.json?access_token=28367b139ee61dead37337bc92197de78dd164d3 HTTP/1.1", host: "a0731acc.ngrok.io"
+2016/05/30 21:19:18 [] 28546#0: *229 [lua] nginx.lua:339: access(): nil, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/user/2.json?access_token=28367b139ee61dead37337bc92197de78dd164d3 HTTP/1.1", host: "a0731acc.ngrok.io"
+2016/05/30 21:20:03 [error] 28546#0: *232 lua entry thread aborted: runtime error: ./nginx.lua:339: attempt to index global 'paramaters' (a nil value)
+stack traceback:
+coroutine 0:
+	./nginx.lua: in function 'access'
+	access_by_lua(nginx.conf:155):1: in function <access_by_lua(nginx.conf:155):1>, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/user/2.json?access_token=28367b139ee61dead37337bc92197de78dd164d3 HTTP/1.1", host: "a0731acc.ngrok.io"
+2016/05/30 21:21:36 [] 28546#0: *233 [lua] nginx.lua:339: access(): nil, client: 127.0.0.1, server: change_me_server_name, request: "GET /api/user/2.json?access_token=28367b139ee61dead37337bc92197de78dd164d3 HTTP/1.1", host: "a0731acc.ngrok.io"
+2016/05/31 11:39:04 [alert] 8181#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/31 11:44:57 [error] 8197#0: *1 connect() failed (111: Connection refused) while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/31 11:44:58 [] 8197#0: *1 [lua] nginx.lua:334: access(): nil, client: 127.0.0.1, server: change_me_server_name, request: "GET /favicon.ico HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://7e205519.ngrok.io/authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline"
+2016/05/31 11:46:49 [error] 8197#0: *5 connect() failed (111: Connection refused) while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/31 11:46:50 [] 8197#0: *5 [lua] nginx.lua:334: access(): nil, client: 127.0.0.1, server: change_me_server_name, request: "GET /favicon.ico HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://7e205519.ngrok.io/authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline"
+2016/05/31 11:50:46 [error] 8197#0: *9 connect() failed (111: Connection refused) while sending to client, client: 127.0.0.1, server: change_me_server_name, request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/31 11:55:18 [alert] 23142#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/31 11:55:18 [notice] 23142#0: signal process started
+2016/05/31 11:55:18 [alert] 8194#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/31 11:55:47 [error] 23150#0: *12 connect() failed (111: Connection refused) while sending to client, client: 127.0.0.1, server: , request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/31 12:03:09 [] 23150#0: *21 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "d56188f0e17f38b7558c8d1d216b1ddaf8c1eb12",
+  tok = "244e90c07d2b8f2aec00f64353b3ff4b9dd4b0a6"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/31 12:03:27 [error] 23150#0: *21 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: , request: "GET /callback?state=d56188f0e17f38b7558c8d1d216b1ddaf8c1eb12&username=2 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 12:03:27 [] 23150#0: *21 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "244e90c07d2b8f2aec00f64353b3ff4b9dd4b0a6",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "d56188f0e17f38b7558c8d1d216b1ddaf8c1eb12"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=d56188f0e17f38b7558c8d1d216b1ddaf8c1eb12&username=2 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 12:03:27 [] 23150#0: *21 [lua] authorized_callback.lua:59: get_token(): {
+  state = "d56188f0e17f38b7558c8d1d216b1ddaf8c1eb12",
+  user_id = "2"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=d56188f0e17f38b7558c8d1d216b1ddaf8c1eb12&username=2 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 12:03:27 [] 23150#0: *21 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=d56188f0e17f38b7558c8d1d216b1ddaf8c1eb12&username=2 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 12:19:47 [error] 23150#0: *26 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: , request: "GET /callback?state=d56188f0e17f38b7558c8d1d216b1ddaf8c1eb12&username=2 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 12:19:47 [] 23150#0: *26 [lua] authorized_callback.lua:58: get_token(): {
+  expires_in = 604800,
+  state = "d56188f0e17f38b7558c8d1d216b1ddaf8c1eb12"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=d56188f0e17f38b7558c8d1d216b1ddaf8c1eb12&username=2 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 12:19:47 [] 23150#0: *26 [lua] authorized_callback.lua:59: get_token(): {
+  state = "d56188f0e17f38b7558c8d1d216b1ddaf8c1eb12",
+  user_id = "2"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=d56188f0e17f38b7558c8d1d216b1ddaf8c1eb12&username=2 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 12:19:47 [] 23150#0: *26 [lua] authorized_callback.lua:60: get_token(): {
+  body = '<?xml version="1.0" encoding="UTF-8"?><error code="required_params_missing">missing required parameters</error>',
+  status = 422
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=d56188f0e17f38b7558c8d1d216b1ddaf8c1eb12&username=2 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 12:19:47 [error] 23150#0: *26 lua entry thread aborted: runtime error: ...2/implicit-flow/token-generation/authorized_callback.lua:64: attempt to concatenate field 'redirect_uri' (a nil value)
+stack traceback:
+coroutine 0:
+	...2/implicit-flow/token-generation/authorized_callback.lua: in function 'get_token'
+	...2/implicit-flow/token-generation/authorized_callback.lua:113: in function <...2/implicit-flow/token-generation/authorized_callback.lua:1> while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=d56188f0e17f38b7558c8d1d216b1ddaf8c1eb12&username=2 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 12:20:16 [] 23150#0: *29 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "9f9bf52447b1ad6ae9f2a8830f8c91a3f915a2a6",
+  tok = "9af46d3c8a5f92a774bf78fc64ecf636b6435178"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/31 12:20:18 [error] 23150#0: *29 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: , request: "GET /callback?state=9f9bf52447b1ad6ae9f2a8830f8c91a3f915a2a6&username=2 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=9f9bf52447b1ad6ae9f2a8830f8c91a3f915a2a6&tok=9af46d3c8a5f92a774bf78fc64ecf636b6435178&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/31 12:20:19 [] 23150#0: *29 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "9af46d3c8a5f92a774bf78fc64ecf636b6435178",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "9f9bf52447b1ad6ae9f2a8830f8c91a3f915a2a6"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=9f9bf52447b1ad6ae9f2a8830f8c91a3f915a2a6&username=2 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=9f9bf52447b1ad6ae9f2a8830f8c91a3f915a2a6&tok=9af46d3c8a5f92a774bf78fc64ecf636b6435178&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/31 12:20:19 [] 23150#0: *29 [lua] authorized_callback.lua:59: get_token(): {
+  state = "9f9bf52447b1ad6ae9f2a8830f8c91a3f915a2a6",
+  user_id = "2"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=9f9bf52447b1ad6ae9f2a8830f8c91a3f915a2a6&username=2 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=9f9bf52447b1ad6ae9f2a8830f8c91a3f915a2a6&tok=9af46d3c8a5f92a774bf78fc64ecf636b6435178&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/31 12:20:19 [] 23150#0: *29 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=9f9bf52447b1ad6ae9f2a8830f8c91a3f915a2a6&username=2 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=9f9bf52447b1ad6ae9f2a8830f8c91a3f915a2a6&tok=9af46d3c8a5f92a774bf78fc64ecf636b6435178&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/31 16:00:58 [alert] 23726#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/31 16:00:58 [notice] 23726#0: signal process started
+2016/05/31 16:00:59 [alert] 8194#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/05/31 16:02:24 [] 23733#0: *47 [lua] authorize.lua:75: redirect_to_auth(): {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "52404fc7974d314c97601d4fe438cf7d7dabb33d",
+  tok = "d5a7f94eee326bbb84ca940857717c84e2a5a0e2"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/31 16:02:37 [error] 23733#0: *47 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: , request: "GET /callback?state=52404fc7974d314c97601d4fe438cf7d7dabb33d&username=2 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 16:02:38 [] 23733#0: *47 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "d5a7f94eee326bbb84ca940857717c84e2a5a0e2",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "52404fc7974d314c97601d4fe438cf7d7dabb33d"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=52404fc7974d314c97601d4fe438cf7d7dabb33d&username=2 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 16:02:38 [] 23733#0: *47 [lua] authorized_callback.lua:59: get_token(): i am checking: {
+  state = "52404fc7974d314c97601d4fe438cf7d7dabb33d",
+  user_id = "2"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=52404fc7974d314c97601d4fe438cf7d7dabb33d&username=2 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 16:02:38 [] 23733#0: *47 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=52404fc7974d314c97601d4fe438cf7d7dabb33d&username=2 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 16:43:56 [] 23733#0: *53 [lua] authorize.lua:74: redirect_to_auth(): sent params: {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "287d5691638ef798155d67e0bb2944d320e5e786",
+  tok = "b446cb4e2901ab62405514e01e7f8113e779825a"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/31 16:44:12 [error] 23733#0: *53 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: , request: "GET /callback?state=287d5691638ef798155d67e0bb2944d320e5e786&username=1 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 16:44:12 [] 23733#0: *53 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "b446cb4e2901ab62405514e01e7f8113e779825a",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "287d5691638ef798155d67e0bb2944d320e5e786"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=287d5691638ef798155d67e0bb2944d320e5e786&username=1 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 16:44:12 [] 23733#0: *53 [lua] authorized_callback.lua:59: get_token(): i am checking: {
+  state = "287d5691638ef798155d67e0bb2944d320e5e786",
+  user_id = "1"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=287d5691638ef798155d67e0bb2944d320e5e786&username=1 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 16:44:12 [] 23733#0: *53 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=287d5691638ef798155d67e0bb2944d320e5e786&username=1 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 17:16:09 [] 23733#0: *58 [lua] authorize.lua:74: redirect_to_auth(): sent params: {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "e2fa3b3ad5eda2de429c5a46636260397ccac47c",
+  tok = "acbfdae79bfbeea64a7a27ef776245008f170c8a"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/31 17:16:21 [error] 23733#0: *58 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: , request: "GET /callback?state=e2fa3b3ad5eda2de429c5a46636260397ccac47c&username=1 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=e2fa3b3ad5eda2de429c5a46636260397ccac47c&tok=acbfdae79bfbeea64a7a27ef776245008f170c8a&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/31 17:16:22 [] 23733#0: *58 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "acbfdae79bfbeea64a7a27ef776245008f170c8a",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "e2fa3b3ad5eda2de429c5a46636260397ccac47c"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=e2fa3b3ad5eda2de429c5a46636260397ccac47c&username=1 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=e2fa3b3ad5eda2de429c5a46636260397ccac47c&tok=acbfdae79bfbeea64a7a27ef776245008f170c8a&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/31 17:16:22 [] 23733#0: *58 [lua] authorized_callback.lua:59: get_token(): i am checking: {
+  state = "e2fa3b3ad5eda2de429c5a46636260397ccac47c",
+  user_id = "1"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=e2fa3b3ad5eda2de429c5a46636260397ccac47c&username=1 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=e2fa3b3ad5eda2de429c5a46636260397ccac47c&tok=acbfdae79bfbeea64a7a27ef776245008f170c8a&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/31 17:16:22 [] 23733#0: *58 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=e2fa3b3ad5eda2de429c5a46636260397ccac47c&username=1 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=e2fa3b3ad5eda2de429c5a46636260397ccac47c&tok=acbfdae79bfbeea64a7a27ef776245008f170c8a&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/05/31 17:17:04 [] 23733#0: *58 [lua] authorize.lua:74: redirect_to_auth(): sent params: {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "1ca159e4d17fe9ce3355fcb4d945f8bf4157c2e0",
+  tok = "666d37784577a6cf2c8ead34f26330dffc6084f0"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/31 17:17:57 [] 23733#0: *58 [lua] authorize.lua:74: redirect_to_auth(): sent params: {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "91eded83bd279526ee382e96d96ef7e24370d9af",
+  tok = "dd62dfe58fbc3a6b40fe8cf3d59f09052a0b47c8"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/05/31 17:18:13 [error] 23733#0: *58 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: , request: "GET /callback?state=91eded83bd279526ee382e96d96ef7e24370d9af&username=1 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 17:18:13 [] 23733#0: *58 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "dd62dfe58fbc3a6b40fe8cf3d59f09052a0b47c8",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "91eded83bd279526ee382e96d96ef7e24370d9af"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=91eded83bd279526ee382e96d96ef7e24370d9af&username=1 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 17:18:13 [] 23733#0: *58 [lua] authorized_callback.lua:59: get_token(): i am checking: {
+  state = "91eded83bd279526ee382e96d96ef7e24370d9af",
+  user_id = "1"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=91eded83bd279526ee382e96d96ef7e24370d9af&username=1 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/05/31 17:18:13 [] 23733#0: *58 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=91eded83bd279526ee382e96d96ef7e24370d9af&username=1 HTTP/1.1", host: "7e205519.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/06/07 16:55:52 [alert] 21249#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/06/07 17:01:19 [] 21253#0: *1 [lua] authorize.lua:74: redirect_to_auth(): sent params: {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "aefb3eb7827c23c3fe46a4f91c4fe825f64a46b8",
+  tok = "2a7f50a753778b494efad8336608f305fc59c7dc"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "b41b246d.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/06/07 17:01:30 [error] 21253#0: *1 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: , request: "GET /callback?state=aefb3eb7827c23c3fe46a4f91c4fe825f64a46b8&username=1 HTTP/1.1", host: "b41b246d.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/06/07 17:01:30 [] 21253#0: *1 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "2a7f50a753778b494efad8336608f305fc59c7dc",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "aefb3eb7827c23c3fe46a4f91c4fe825f64a46b8"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=aefb3eb7827c23c3fe46a4f91c4fe825f64a46b8&username=1 HTTP/1.1", host: "b41b246d.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/06/07 17:01:30 [] 21253#0: *1 [lua] authorized_callback.lua:59: get_token(): i am checking: {
+  state = "aefb3eb7827c23c3fe46a4f91c4fe825f64a46b8",
+  user_id = "1"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=aefb3eb7827c23c3fe46a4f91c4fe825f64a46b8&username=1 HTTP/1.1", host: "b41b246d.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/06/07 17:01:30 [] 21253#0: *1 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=aefb3eb7827c23c3fe46a4f91c4fe825f64a46b8&username=1 HTTP/1.1", host: "b41b246d.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/06/07 18:02:10 [] 21253#0: *10 [lua] authorize.lua:74: redirect_to_auth(): sent params: {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "f24690a977fb8a0e3acfe76893f2fc7055a3e589",
+  tok = "1fa1fee635735467ebdb4cefd353ab6b7d3c8f2a"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "b41b246d.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/06/07 18:04:25 [] 21253#0: *14 [lua] authorize.lua:74: redirect_to_auth(): sent params: {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "277b0f3efa6305ab99d78904ba03e68e892d79e5",
+  tok = "0a3a6e634f01773fc19351545ef51d9f0d5d96a7"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "b41b246d.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/06/07 18:04:40 [error] 21253#0: *14 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: , request: "GET /callback?state=277b0f3efa6305ab99d78904ba03e68e892d79e5&username=2 HTTP/1.1", host: "b41b246d.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/06/07 18:04:40 [] 21253#0: *14 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "0a3a6e634f01773fc19351545ef51d9f0d5d96a7",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "277b0f3efa6305ab99d78904ba03e68e892d79e5"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=277b0f3efa6305ab99d78904ba03e68e892d79e5&username=2 HTTP/1.1", host: "b41b246d.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/06/07 18:04:40 [] 21253#0: *14 [lua] authorized_callback.lua:59: get_token(): i am checking: {
+  state = "277b0f3efa6305ab99d78904ba03e68e892d79e5",
+  user_id = "2"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=277b0f3efa6305ab99d78904ba03e68e892d79e5&username=2 HTTP/1.1", host: "b41b246d.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/06/07 18:04:40 [] 21253#0: *14 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=277b0f3efa6305ab99d78904ba03e68e892d79e5&username=2 HTTP/1.1", host: "b41b246d.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize"
+2016/06/08 11:40:47 [alert] 7158#0: lua_code_cache is off; this will hurt performance in /home/kevin/nginx-oauth-templates/oauth2/implicit-flow/token-generation/nginx.conf:29
+2016/06/08 11:42:56 [] 7162#0: *11 [lua] authorize.lua:74: redirect_to_auth(): sent params: {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "30a13ca3ca1da31c4f92de901829f9be363a80d0",
+  tok = "21d485db5c457e66a386261bf96faa3eb7807463"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "b41b246d.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/06/08 11:43:22 [] 7162#0: *11 [lua] authorize.lua:74: redirect_to_auth(): sent params: {
+  client_id = "59b86c37",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  response_type = "token",
+  scope = "write",
+  state = "fb1bfd4f22d80664eed3ec3c86b3a11f6f9a12b9",
+  tok = "6d166c9a9a6b3b4df17babf5d12f6634e905938a"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /authorize?scope=write&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&response_type=token&client_id=59b86c37&access_type=offline HTTP/1.1", host: "b41b246d.ngrok.io", referrer: "https://developers.google.com/oauthplayground/"
+2016/06/08 11:43:41 [error] 7162#0: *11 attempt to send data on a closed socket: u:0000000000000000, c:0000000000000000, ft:0 eof:0, client: 127.0.0.1, server: , request: "GET /callback?state=fb1bfd4f22d80664eed3ec3c86b3a11f6f9a12b9&username=2 HTTP/1.1", host: "b41b246d.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=fb1bfd4f22d80664eed3ec3c86b3a11f6f9a12b9&tok=6d166c9a9a6b3b4df17babf5d12f6634e905938a&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/06/08 11:43:41 [] 7162#0: *11 [lua] authorized_callback.lua:58: get_token(): {
+  access_token = "6d166c9a9a6b3b4df17babf5d12f6634e905938a",
+  client_id = "59b86c37",
+  expires_in = 604800,
+  plan_id = "write",
+  redirect_uri = "https://developers.google.com/oauthplayground",
+  state = "fb1bfd4f22d80664eed3ec3c86b3a11f6f9a12b9"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=fb1bfd4f22d80664eed3ec3c86b3a11f6f9a12b9&username=2 HTTP/1.1", host: "b41b246d.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=fb1bfd4f22d80664eed3ec3c86b3a11f6f9a12b9&tok=6d166c9a9a6b3b4df17babf5d12f6634e905938a&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/06/08 11:43:41 [] 7162#0: *11 [lua] authorized_callback.lua:59: get_token(): i am checking: {
+  state = "fb1bfd4f22d80664eed3ec3c86b3a11f6f9a12b9",
+  user_id = "2"
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=fb1bfd4f22d80664eed3ec3c86b3a11f6f9a12b9&username=2 HTTP/1.1", host: "b41b246d.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=fb1bfd4f22d80664eed3ec3c86b3a11f6f9a12b9&tok=6d166c9a9a6b3b4df17babf5d12f6634e905938a&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"
+2016/06/08 11:43:41 [] 7162#0: *11 [lua] authorized_callback.lua:60: get_token(): {
+  body = "",
+  status = 200
+} while sending to client, client: 127.0.0.1, server: , request: "GET /callback?state=fb1bfd4f22d80664eed3ec3c86b3a11f6f9a12b9&username=2 HTTP/1.1", host: "b41b246d.ngrok.io", referrer: "https://young-lake-75048.herokuapp.com/authorize?scope=write&response_type=token&state=fb1bfd4f22d80664eed3ec3c86b3a11f6f9a12b9&tok=6d166c9a9a6b3b4df17babf5d12f6634e905938a&redirect_uri=https://developers.google.com/oauthplayground&client_id=59b86c37"

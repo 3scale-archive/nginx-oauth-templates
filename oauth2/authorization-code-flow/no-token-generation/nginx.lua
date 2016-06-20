@@ -265,7 +265,19 @@ function oauth(params, service)
       ngx.var.cached_key = nil
       error_authorization_failed(service)
     else
+    -- If required: extract user_id token belongs to and compare with value from auth response
+    -- local user_id = res.body:match('user_id="(%S-)">'..access_token)
+    -- if user_id == params.user_id then 
+      -- Set this value if you need to send user_id back to your API
+      -- ngx.var.user_id = user_id
       access_tokens:set(ngx.var.cached_key,200)
+    -- else
+      -- access_tokens:delete(ngx.var.cached_key)
+      -- ngx.status = res.status
+      -- ngx.header.content_type = "application/json"
+      -- ngx.var.cached_key = nil
+      -- error_authorization_failed(service)
+    -- end
     end
 
     ngx.var.cached_key = nil
@@ -322,14 +334,18 @@ if ngx.var.service_id == 'CHANGE_ME_SERVICE_ID' then
   service = service_CHANGE_ME_SERVICE_ID --
   ngx.var.secret_token = service.secret_token
 
-  -- Do this to remove token type, e.g Bearer from token
+  -- If relevant, extract user_id from request
+  -- e.g local user_id =  ngx.re.match(ngx.var.uri,[=[^/api/user/([\w_\.-]+)\.json]=])
+  -- params.user_id = user_id
+
+  -- Do this to extract token from Authorization: Bearer <access_token> header
   -- params.access_token = string.split(parameters["authorization"], " ")[2]
   -- ngx.var.access_token = params.access_token
 
   ngx.var.access_token = parameters.access_token
   params.access_token = parameters.access_token
   get_credentials_access_token(params , service_CHANGE_ME_SERVICE_ID)
-  ngx.var.cached_key = "CHANGE_ME_SERVICE_ID" .. ":" .. params.access_token
+  ngx.var.cached_key = "CHANGE_ME_SERVICE_ID" .. ":" .. params.access_token .. ( params.user_id and  ":" .. params.user_id or "" )
   auth_strat = "oauth"
   ngx.var.service_id = "CHANGE_ME_SERVICE_ID"
   ngx.var.proxy_pass = "https://backend_CHANGE_ME_API_BACKEND"
@@ -356,9 +372,6 @@ if get_debug_value() then
   ngx.header["X-3scale-usage"]         = ngx.var.usage
   ngx.header["X-3scale-hostname"]      = ngx.var.hostname
 end
-
--- this would be better with the whole authrep call, with user_id, and everything so that
--- it can be replayed if it's a cached response
 
 authorize(auth_strat, params, service)
 

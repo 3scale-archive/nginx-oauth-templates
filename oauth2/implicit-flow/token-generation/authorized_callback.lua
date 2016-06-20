@@ -104,8 +104,8 @@ end
 
 local params = extract_params()
 
-local exists = check_state(params)
+local is_valid = check_state(params)
 
-if exists then
+if is_valid then
   get_token(params)
 end

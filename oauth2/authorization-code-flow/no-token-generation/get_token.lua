@@ -100,9 +100,9 @@ end
 
 local params = extract_params()
 
-local exists = check_client_credentials(params)
+local is_valid = check_client_credentials(params)
 
-if exists then
+if is_valid then
   get_token(params)
 else
   ngx.status = 401

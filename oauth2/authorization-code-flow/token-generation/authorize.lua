@@ -91,9 +91,9 @@ end
 
 local params = extract_params()
 
-local exists = check_credentials(params)
+local is_valid = check_credentials(params)
 
-if exists then
+if is_valid then
   authorize(params)
 else
   params.error = "invalid_client"

@@ -4,16 +4,16 @@
 local _M = {}
 
 service_CHANGE_ME_SERVICE_ID = {
-error_auth_failed = 'Authentication failed',
-error_auth_missing = 'Authentication parameters missing',
-auth_failed_headers = 'text/plain; charset=us-ascii',
-auth_missing_headers = 'text/plain; charset=us-ascii',
+  error_auth_failed = 'Authentication failed',
+  error_auth_missing = 'Authentication parameters missing',
+  auth_failed_headers = 'text/plain; charset=us-ascii',
+  auth_missing_headers = 'text/plain; charset=us-ascii',
   error_no_match = 'No Mapping Rule matched',
-no_match_headers = 'text/plain; charset=us-ascii',
-no_match_status = 404,
-auth_failed_status = 403,
-auth_missing_status = 403,
-secret_token = 'Shared_secret_sent_from_proxy_to_API_backend'
+  no_match_headers = 'text/plain; charset=us-ascii',
+  no_match_status = 404,
+  auth_failed_status = 403,
+  auth_missing_status = 403,
+  secret_token = 'Shared_secret_sent_from_proxy_to_API_backend'
 }
 
 
@@ -177,12 +177,12 @@ matched_rules2 = ""
 
   local args = get_auth_params(nil, method)
 
--- mapping rules go here, e.g
-local m =  ngx.re.match(path,[=[^/]=])
-if (m and method == "GET") then
-   -- rule: / --
+  -- mapping rules go here, e.g
+    local m =  ngx.re.match(path,[=[^/]=])
+  if (m and method == "GET") then
+     -- rule: / --
           
-   table.insert(matched_rules, "/")
+     table.insert(matched_rules, "/")
 
       usage_t["hits"] = set_or_inc(usage_t, "hits", 1)
       found = true
@@ -220,10 +220,10 @@ function get_credentials_app_id_app_key(params, service)
   end
 end
 
-  function get_credentials_access_token(params, service)
+function get_credentials_access_token(params, service)
   if params["access_token"] == nil and params["authorization"] == nil then -- TODO: check where the params come
-  error_no_credentials(service)
-end
+    error_no_credentials(service)
+  end
 end
 
 function get_credentials_user_key(params, service)
@@ -264,20 +264,8 @@ function oauth(params, service)
       ngx.header.content_type = "application/json"
       ngx.var.cached_key = nil
       error_authorization_failed(service)
-  else
-    -- If required: extract user_id token belongs to and compare with value from auth response
-    -- local user_id = res.body:match('user_id="(%S-)">'..access_token)
-    -- if user_id == params.user_id then 
-      -- Set this value if you need to send user_id back to your API
-      -- ngx.var.user_id = user_id
+    else
       access_tokens:set(ngx.var.cached_key,200)
-    -- else
-      -- access_tokens:delete(ngx.var.cached_key)
-      -- ngx.status = res.status
-      -- ngx.header.content_type = "application/json"
-      -- ngx.var.cached_key = nil
-      -- error_authorization_failed(service)
-    -- end
   end
 
     ngx.var.cached_key = nil
@@ -298,7 +286,7 @@ function authrep(params, service)
       api_keys:delete(ngx.var.cached_key)
       ngx.status = res.status
       ngx.header.content_type = "application/json"
-      ngx.var.cached_key = nil
+            ngx.var.cached_key = nil
       error_authorization_failed(service)
     else
             api_keys:set(ngx.var.cached_key,200)
@@ -334,18 +322,14 @@ if ngx.var.service_id == 'CHANGE_ME_SERVICE_ID' then
   service = service_CHANGE_ME_SERVICE_ID --
   ngx.var.secret_token = service.secret_token
 
-  -- If relevant, extract user_id from request
-  -- e.g local user_id =  ngx.re.match(ngx.var.uri,[=[^/api/user/([\w_\.-]+)\.json]=])
-  -- params.user_id = user_id
-
-  -- Do this to extract token from Authorization: Bearer <access_token> header
+  -- Do this to remove token type, e.g Bearer from token
   -- params.access_token = string.split(parameters["authorization"], " ")[2]
   -- ngx.var.access_token = params.access_token
 
   ngx.var.access_token = parameters.access_token
   params.access_token = parameters.access_token
   get_credentials_access_token(params , service_CHANGE_ME_SERVICE_ID)
-  ngx.var.cached_key = "CHANGE_ME_SERVICE_ID" .. ":" .. params.access_token .. ( params.user_id and  ":" .. params.user_id or "" )
+  ngx.var.cached_key = "CHANGE_ME_SERVICE_ID" .. ":" .. params.access_token
   auth_strat = "oauth"
   ngx.var.service_id = "CHANGE_ME_SERVICE_ID"
   ngx.var.proxy_pass = "https://backend_CHANGE_ME_API_BACKEND"
@@ -372,6 +356,9 @@ if get_debug_value() then
   ngx.header["X-3scale-usage"]         = ngx.var.usage
   ngx.header["X-3scale-hostname"]      = ngx.var.hostname
 end
+
+-- this would be better with the whole authrep call, with user_id, and everything so that
+-- it can be replayed if it's a cached response
 
 authorize(auth_strat, params, service)
 

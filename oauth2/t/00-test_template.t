@@ -1,4 +1,4 @@
-use Test::Nginx::Socket::Lua 'no_plan';
+use Test::Nginx::Socket::Lua skip_all => "just a template";
 
 no_long_string();
 no_diff();

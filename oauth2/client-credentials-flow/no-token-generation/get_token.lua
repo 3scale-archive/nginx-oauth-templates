@@ -64,7 +64,7 @@ function get_token(params)
     ngx.exit(ngx.HTTP_FORBIDDEN)
   else
     local token = parse_token(res.body)
-    local stored = store_token(params.client_id, token)
+    local stored = store_token(params, token)
 
     if stored.status ~= 200 then
       ngx.say(stored.body)

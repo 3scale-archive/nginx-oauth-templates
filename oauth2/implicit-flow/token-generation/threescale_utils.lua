@@ -139,6 +139,24 @@ function string:split(delimiter)
   return result
 end
 
+--[[
+  Aux function to split a string
+]]--
+
+function string:split(delimiter)
+  local result = { }
+  local from = 1
+  local delim_from, delim_to = string.find( self, delimiter, from )
+  if delim_from == nil then return {self} end
+  while delim_from do
+    table.insert( result, string.sub( self, from , delim_from-1 ) )
+    from = delim_to + 1
+    delim_from, delim_to = string.find( self, delimiter, from )
+  end
+  table.insert( result, string.sub( self, from ) )
+  return result
+end
+
 return M
 
 -- -- Example usage:

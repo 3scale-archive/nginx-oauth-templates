@@ -316,25 +316,6 @@ function _M.post_action_content()
   ngx.exit(ngx.HTTP_OK)
 end
 
-function _M.post_action_oauth_content()
-  local method, path, headers = ngx.req.get_method(), ngx.var.request_uri, ngx.req.get_headers()
-
-  local req = cjson.encode{method=method, path=path, headers=headers}
-  local resp = cjson.encode{ body = ngx.var.resp_body, headers = cjson.decode(ngx.var.resp_headers)}
-
-  local cached_key = ngx.var.cached_key
-  if cached_key ~= nil and cached_key ~= "null" then
-    local status_code = ngx.var.status
-    local res1 = ngx.location.capture("/threescale_oauth_authrep?code=".. status_code .. "&req=" .. ngx.escape_uri(req) .. "&resp=" .. ngx.escape_uri(resp), { share_all_vars = true })
-    if res1.status ~= 200 then
-      local access_tokens = ngx.shared.api_keys
-      access_tokens:delete(cached_key)
-    end
-  end
-
-  ngx.exit(ngx.HTTP_OK)
-end
-
 if custom_config then
   local ok, c = pcall(function() return require(custom_config) end)
   if ok and type(c) == 'table' and type(c.setup) == 'function' then
